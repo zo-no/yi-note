@@ -16,10 +16,11 @@
     "build": "npm run build:chromium && npm run build:firefox",
     "dev:chromium": "webpack --env=chromium --config webpack.dev.config.js",
     "dev:firefox": "webpack --env=firefox --config webpack.dev.config.js",
-    "start:dev": "npm run dev:chromium"
+    "start:dev": "npm run dev:chromium",
+    "test": "node --test tests/*.test.cjs"
   },
   "engines": {
-    "node": ">=10.0.0",
+    "node": ">=18.0.0",
     "npm": ">=6.0.0"
   },
   "author": "Shuo Wu",

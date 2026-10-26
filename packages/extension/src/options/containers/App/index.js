@@ -33,17 +33,21 @@ const App = () => {
   } = useStoreActions(actions => actions);
 
   useEffect(() => {
-    browser.runtime.onMessage.addListener(message => {
+    const onMessage = (message, sender, sendResponse) => {
       const { action, data } = message;
       switch (action) {
         case 'open-page':
           history.push(`/pages/${data}`);
-          return true;
+          sendResponse(true);
+          return;
         case 'filter-by-tags':
           history.push(`/?tags=${data.join(',')}`);
-          return true;
+          sendResponse(true);
+          return;
       }
-    });
+    };
+    browser.runtime.onMessage.addListener(onMessage);
+    return () => browser.runtime.onMessage.removeListener(onMessage);
   }, [history]);
 
   useEffect(() => {

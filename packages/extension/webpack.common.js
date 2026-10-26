@@ -1,27 +1,13 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-const FileManagerPlugin = require('filemanager-webpack-plugin');
+const { BannerPlugin } = require('webpack');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const Dotenv = require('dotenv-webpack');
-const pkg = require('./package.json');
-const commonManifest = require('./manifest.common.json');
+const createManifest = require('./manifest');
 
 const getManifestPlugin = env => {
-  const seed = commonManifest;
-  if (env === 'chromium') {
-    seed.options_page = 'options.html';
-    seed.browser = 'chromium';
-  } else {
-    // Use web extension standard as fallback
-    seed.options_ui = {
-      page: 'options.html',
-      browser_style: true
-    };
-    seed.browser = 'firefox';
-    seed.permissions.push('downloads');
-    seed.permissions.push('<all_urls>');
-  }
+  const seed = createManifest(env);
 
   return new ManifestPlugin({
     fileName: 'manifest.json',
@@ -51,7 +37,7 @@ module.exports = env => {
         },
         {
           test: /\.css$/i,
-          use: ['style-loader', 'css-loader'],
+          use: ['style-loader', 'css-loader']
         },
         {
           test: /\.png$/,
@@ -87,28 +73,36 @@ module.exports = env => {
       ]
     },
     output: {
-      path: path.resolve(__dirname, 'dist')
+      path: path.resolve(__dirname, 'dist', env),
+      globalObject: 'globalThis',
+      // Webpack 4's default MD4 hash is disabled in Node 18/OpenSSL 3.
+      hashFunction: 'sha256'
     },
     plugins: [
       getManifestPlugin(env),
       new Dotenv(),
-      new CopyWebpackPlugin([{ from: 'src/vendors', to: 'vendors' }]),
+      new CopyWebpackPlugin([
+        { from: 'src/vendors', to: 'vendors' },
+        { from: 'icons', to: 'icons' },
+        { from: '_locales', to: '_locales' },
+        { from: 'installed.png', to: 'installed.png' },
+        ...(env === 'chromium' ? [{ from: 'src/offscreen', to: '.' }] : [])
+      ]),
+      ...(env === 'chromium'
+        ? [
+            new BannerPlugin({
+              banner: "importScripts('vendors/browser-polyfill.js');",
+              raw: true,
+              entryOnly: true,
+              include: /background\.js$/
+            })
+          ]
+        : []),
       new HtmlWebPackPlugin({
         template: 'src/options/index.html',
         filename: 'options.html',
         browserPolyfill: 'vendors/browser-polyfill.js',
         chunks: ['options']
-      }),
-      new FileManagerPlugin({
-        onEnd: [
-          {
-            copy: [
-              { source: 'icons/**/*', destination: 'dist/icons' },
-              { source: '_locales/**/*', destination: 'dist/_locales' },
-              { source: 'installed.png', destination: 'dist' }
-            ]
-          }
-        ]
       })
     ]
   };

@@ -42,9 +42,10 @@ export const exportMarkdownFile = async (data, filename) => {
 };
 
 export const exportFile = async (blob, filename) => {
-  const manifest = await browser.runtime.getManifest();
-  if (typeof browser !== 'undefined' && manifest.browser === 'firefox') {
-    browser.runtime.sendMessage({
+  const manifest =
+    typeof browser !== 'undefined' && browser.runtime.getManifest();
+  if (manifest && manifest.browser === 'firefox') {
+    await browser.runtime.sendMessage({
       action: 'export-file',
       blob,
       filename

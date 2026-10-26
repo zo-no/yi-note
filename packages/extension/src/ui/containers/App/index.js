@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useInterval } from 'react-recipes';
@@ -32,6 +32,7 @@ const App = () => {
   const history = useHistory();
   const { pathname } = useLocation();
   const [progress, setProgress] = useState(false);
+  const contextInvalidated = useRef(false);
 
   const onShowingAd = useCallback(() => setShowingAd(true), [setShowingAd]);
   const onHidingAd = useCallback(() => setShowingAd(false), [setShowingAd]);
@@ -41,6 +42,16 @@ const App = () => {
   }, [onHidingAd, onShowingAd, url]);
 
   useInterval(() => {
+    if (contextInvalidated.current) {
+      return;
+    }
+    // A sleeping MV3 worker does not invalidate the extension context.
+    if (typeof browser !== 'undefined' && !browser.runtime.id) {
+      contextInvalidated.current = true;
+      setProgress(false);
+      history.replace('/reload');
+      return;
+    }
     if (url !== window.location.href) {
       if (
         settings[KEY_RELOAD_TAB] &&
@@ -76,25 +87,19 @@ const App = () => {
   useEffect(() => {
     // Register message listener
     if (typeof browser !== 'undefined') {
-      browser.runtime.onMessage.addListener(request => {
+      const onMessage = (request, sender, sendResponse) => {
         const { action } = request;
         switch (action) {
           case 'togglePanel':
-            setOpen(!open);
+            setOpen();
+            sendResponse(true);
             return;
         }
-      });
+      };
+      browser.runtime.onMessage.addListener(onMessage);
+      return () => browser.runtime.onMessage.removeListener(onMessage);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (typeof browser !== 'undefined') {
-      const port = browser.runtime.connect({ name: 'yinote' });
-      port.onDisconnect.addListener(() => history.replace('/reload'));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setOpen]);
 
   useEffect(() => {
     fetchSettings();
@@ -106,10 +111,16 @@ const App = () => {
       // First load of player, options needed.
       getPlayer()
         .then(player => {
+          if (contextInvalidated.current) {
+            return;
+          }
           setProgress(false);
           history.replace(player ? '/video-notes' : '/search');
         })
         .catch(err => {
+          if (contextInvalidated.current) {
+            return;
+          }
           logger.info(err);
           setProgress(false);
           history.replace('/search');

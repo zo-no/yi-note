@@ -80,24 +80,31 @@ There are serveral options to use this extension:
 
 ##### Prerequisite
 
-Suggested environment:
+- Node >= 18 (required for the migration regression tests)
+- Yarn Classic 1.x
+- Chrome >= 116 for the Chromium Manifest V3 build
 
-- Node >= 10.0.0
-- NPM >= 6.0.0
+The repository still uses Webpack 4 and other legacy dependencies; this migration does not upgrade the entire toolchain.
 
 ##### Install dependencies
 
 ```bash
-yarn install
+yarn install --frozen-lockfile
 ```
 
 ##### Start development
 
-Run `yarn start:ext`.
+Run `yarn start:ext` to watch the Chromium build.
 
-For `content script` change, you need to reload the extension in `chrome://extensions` tab.
+For a one-time build, run `yarn workspace @yi-note/extension build:chromium`.
+Open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `packages/extension/dist/chromium` (not the repository root).
 
-For `background` and `options` changes, just refresh the page should be able to load the changes.
+After content-script, background or manifest changes, reload the extension in `chrome://extensions`, then refresh the target video page. Refresh the options page after options-only changes.
+
+`yarn build:ext` builds both browsers into separate directories: `packages/extension/dist/chromium` (Manifest V3) and `packages/extension/dist/firefox` (Manifest V2). ZIP files are written to `artifactory/`.
+
+Run the dependency-free migration tests with `node --test packages/extension/tests/*.test.cjs`.
+See the [Manifest V3 migration guide (中文)](MIGRATING-MV3.md) for implementation notes, compatibility limits and a manual test checklist.
 
 `playground` mode is also provided to easy `content script` development. This mode simulates `content script` to inject UI widget in page served from `webpack dev server`
 
@@ -109,7 +116,7 @@ For more information about how to develop browser extensions, please refer to [C
 
 This extension inject [content script](https://developer.chrome.com/extensions/content_scripts) to display UI widget and interact with host page.
 
-[Background Scripts](https://developer.chrome.com/extensions/background_pages) is used for message handling and handling data migrations.
+A Manifest V3 background service worker (Chromium), or a Manifest V2 background page (Firefox), handles extension actions, messages and data migrations. Chromium uses a local offscreen document for clipboard DOM access.
 
 [Options page](https://developer.chrome.com/extensions/options) is provided to give more webpage real estate for data management and configuring settings.
 

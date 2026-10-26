@@ -8,24 +8,20 @@ module.exports = env =>
   merge(common(env), {
     mode: 'production',
     optimization: {
-      minimize: false // Evernote SDK has issue when code is minifized
+      minimize: false, // Evernote SDK has issue when code is minifized
+      // Webpack 4's concatenation hashes use MD4, ignoring output.hashFunction.
+      // Disable this optimization so Node 18+ does not need legacy OpenSSL.
+      concatenateModules: false
     },
     plugins: [
       new CleanWebpackPlugin(),
       new FileManagerPlugin({
         onEnd: [
-          {
-            copy: [
-              { source: 'icons/**/*', destination: 'dist/icons' },
-              { source: '_locales/**/*', destination: 'dist/_locales' },
-              { source: 'installed.png', destination: 'dist' }
-            ]
-          },
           { mkdir: ['../../artifactory'] },
           {
             archive: [
               {
-                source: 'dist',
+                source: `dist/${env}`,
                 destination: `../../artifactory/yi-note-extension_${env}_${pkg.version}.zip`
               }
             ]
