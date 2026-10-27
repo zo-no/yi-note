@@ -2,6 +2,14 @@ import videoUrlParser from 'js-video-url-parser';
 import { QUERY_AUTO_JUMP } from '../constants';
 
 export default (url, timestamp) => {
+  const seconds =
+    typeof timestamp === 'string' && timestamp.trim() !== ''
+      ? Number(timestamp)
+      : timestamp;
+  if (!Number.isFinite(seconds)) {
+    return url;
+  }
+
   if (timestamp < 0) {
     timestamp = 0;
   }

@@ -54,6 +54,15 @@
   "notesView_editor_saveButton": {
     "message": "Save"
   },
+  "notesView_editor_saving": {
+    "message": "Saving..."
+  },
+  "notesView_editor_timestampUnavailable": {
+    "message": "Unable to read a valid video timestamp. Your text has been kept. Try saving again when the video is ready. Existing notes with missing timestamps need to be recorded again at the correct position."
+  },
+  "notesView_editor_saveError": {
+    "message": "Could not save the note. Your text has been kept; please try again."
+  },
   "notesView_editor_cancelButton": {
     "message": "Cancel"
   },

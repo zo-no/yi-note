@@ -3,13 +3,14 @@ import { action, thunk } from 'easy-peasy';
 export const defaultNote = {
   id: '',
   content: '',
-  timestamp: 0,
+  timestamp: null,
   image: ''
 };
 
 const videoNotesModel = {
   editor: {
     active: false,
+    revision: 0,
     note: { ...defaultNote },
     setActive: action((state, active) => {
       state.active = active;
@@ -19,7 +20,8 @@ const videoNotesModel = {
     }),
     reset: action(state => {
       state.active = false;
-      state.note = {};
+      state.revision += 1;
+      state.note = { ...defaultNote };
     })
   },
   support: {
@@ -30,7 +32,8 @@ const videoNotesModel = {
   },
   edit: action((state, note) => {
     state.editor.active = true;
-    state.editor.note = { ...note };
+    state.editor.revision += 1;
+    state.editor.note = { ...defaultNote, ...note };
   }),
   reset: thunk(async actions => {
     actions.editor.reset();

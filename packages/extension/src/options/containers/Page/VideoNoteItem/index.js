@@ -20,6 +20,8 @@ const ACTION_ANNOTATE = 'ANNOTATE';
 
 const NoteItem = ({ note, url }) => {
   const { id, content, timestamp, image } = note;
+  const formattedTime = secondsToTime(timestamp);
+  const hasTimestamp = formattedTime !== '--:--';
   const { t } = useTranslation('options');
   const {
     page: { saveNote, removeNote },
@@ -131,9 +133,13 @@ const NoteItem = ({ note, url }) => {
             spacing={2}
           >
             <Grid item container xs={4} alignItems="center">
-              <Link href={buildAutoSeekUrl(url, timestamp)} target="_blank">
-                {secondsToTime(timestamp)}
-              </Link>
+              {hasTimestamp ? (
+                <Link href={buildAutoSeekUrl(url, timestamp)} target="_blank">
+                  {formattedTime}
+                </Link>
+              ) : (
+                <span>{formattedTime}</span>
+              )}
             </Grid>
             <Grid item xs={8}>
               <Grid container direction="row" spacing={1} justify="flex-end">

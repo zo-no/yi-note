@@ -12,9 +12,9 @@ const StyledButton = styled.button`
   color: ${props => props.color};
 `;
 
-const TextButton = ({ children, color, onClick }) => {
+const TextButton = ({ children, color, onClick, disabled }) => {
   return (
-    <StyledButton color={color} onClick={onClick}>
+    <StyledButton color={color} onClick={onClick} disabled={disabled}>
       {children}
     </StyledButton>
   );
@@ -23,7 +23,8 @@ const TextButton = ({ children, color, onClick }) => {
 TextButton.propTypes = {
   children: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  color: PropTypes.string
+  color: PropTypes.string,
+  disabled: PropTypes.bool
 };
 
 TextButton.defaultProps = {

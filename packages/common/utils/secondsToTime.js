@@ -1,4 +1,11 @@
 export default s => {
+  if (typeof s === 'string' && s.trim() !== '') {
+    s = Number(s);
+  }
+  if (!Number.isFinite(s) || s < 0) {
+    return '--:--';
+  }
+
   var hours = Math.floor(s / 3600);
   var minutes = Math.floor((s - hours * 3600) / 60);
   var seconds = s - hours * 3600 - minutes * 60;

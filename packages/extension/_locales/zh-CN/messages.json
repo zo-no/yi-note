@@ -54,6 +54,15 @@
   "notesView_editor_saveButton": {
     "message": "保存"
   },
+  "notesView_editor_saving": {
+    "message": "保存中…"
+  },
+  "notesView_editor_timestampUnavailable": {
+    "message": "无法获取有效的视频时间，已保留输入内容。请等待视频就绪后重试保存。已有笔记若缺失时间戳，需要在正确的播放位置重新记录。"
+  },
+  "notesView_editor_saveError": {
+    "message": "笔记保存失败，已保留输入内容，请重试。"
+  },
   "notesView_editor_cancelButton": {
     "message": "取消"
   },

@@ -4,6 +4,7 @@ import { v5 } from 'uuid';
 import { storage as StorageService } from '../services';
 import { generatePageId, addTagToList, addNoteToList } from '../utils';
 import uuidNamespace from '../utils/uuid-namespace';
+import { TYPE_VIDEO_NOTE } from '../constants';
 
 export const defaultPage = {
   id: '',
@@ -45,16 +46,26 @@ const pageModel = {
     actions.setPage(defaultPage);
   }),
   saveNote: thunk(async (actions, note, { getState, getStoreState }) => {
+    let { data: page } = getState();
+    const originalPageId = page.id;
+    const existingNote =
+      note.id && page.notes.find(item => item.id === note.id);
+    if (
+      !existingNote &&
+      note.type === TYPE_VIDEO_NOTE &&
+      (!Number.isFinite(note.timestamp) || note.timestamp < 0)
+    ) {
+      throw new Error('A new video note requires a valid timestamp');
+    }
     const { url } = getStoreState().app;
     const id = note.id || v5(note.content + note.timestamp, uuidNamespace);
-    let { data: page } = getState();
 
     if (!page.id) {
       // Page has not been bookmarked yet
       const pageObj = {
         id: generatePageId(url),
         meta: getMetadata(document, url),
-        notes: [{ id, ...note }],
+        notes: [{ ...note, id }],
         createdAt: +new Date()
       };
       page = await storage.addPage(pageObj);
@@ -63,14 +74,20 @@ const pageModel = {
       const noteFromPage = page.notes.find(note => note.id === id);
       let noteFromResponse;
       if (noteFromPage) {
-        noteFromResponse = await storage.updateNote(page.id, { id, ...note });
+        noteFromResponse = await storage.updateNote(page.id, { ...note, id });
       } else {
-        noteFromResponse = await storage.addNote(page.id, { id, ...note });
+        noteFromResponse = await storage.addNote(page.id, { ...note, id });
       }
       const notes = addNoteToList(page.notes, noteFromResponse);
       page = { ...page, notes };
     }
-    actions.setPage(page);
+    // A save may finish after SPA navigation; do not replace the new page.
+    if (
+      getStoreState().app.url === url &&
+      getState().data.id === originalPageId
+    ) {
+      actions.setPage(page);
+    }
   }),
   removeNote: thunk(async (actions, noteId, { getState }) => {
     const { id: pageId, notes } = getState().data;

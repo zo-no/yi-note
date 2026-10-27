@@ -23,6 +23,8 @@ import { PlayerFactory } from '../../../services/player';
 
 const NoteItem = ({ note }) => {
   const { id, content, timestamp } = note;
+  const formattedTime = secondsToTime(timestamp);
+  const hasTimestamp = formattedTime !== '--:--';
   const { t } = useTranslation(['notesView', 'note']);
   const {
     videoNotes: { edit },
@@ -34,6 +36,7 @@ const NoteItem = ({ note }) => {
   const handleExpand = () => setExpanded(!expanded);
 
   const handlePlay = async () => {
+    if (!hasTimestamp) return;
     const player = await PlayerFactory.getPlayer();
     player.seek(timestamp);
   };
@@ -46,7 +49,6 @@ const NoteItem = ({ note }) => {
       onConfirm: removeNote.bind(null, id)
     });
 
-  const formattedTime = secondsToTime(timestamp);
   return (
     <Grid container>
       <StyledMainRow
@@ -58,13 +60,17 @@ const NoteItem = ({ note }) => {
       >
         <Grid item>
           <Grid container direction="row" alignItems="center">
-            <IconButton
-              color="red"
-              tooltip={t('note.play.tooltip', { formattedTime })}
-              onClick={handlePlay}
-            >
-              <PlayIcon />
-            </IconButton>
+            {hasTimestamp ? (
+              <IconButton
+                color="red"
+                tooltip={t('note.play.tooltip', { formattedTime })}
+                onClick={handlePlay}
+              >
+                <PlayIcon />
+              </IconButton>
+            ) : (
+              <PlayIcon color="disabled" titleAccess={formattedTime} />
+            )}
             <StyledSummary>{Markdown.toText(content)}</StyledSummary>
           </Grid>
         </Grid>
