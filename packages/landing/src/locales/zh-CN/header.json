@@ -1,0 +1,10 @@
+{
+  "title": "wildframe",
+  "browserExtensions": "浏览器扩展",
+  "availableOn": "支持的浏览器",
+  "download": "获取 {{browser}} 版 {{siteTitle}}",
+  "chromeStore": "Chrome 应用商店",
+  "firefoxStore": "Firefox 附加组件",
+  "edgeStore": "Microsoft Edge 加载项",
+  "language": "语言"
+}

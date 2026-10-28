@@ -9,8 +9,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { useStaticQuery, graphql } from 'gatsby';
+import { useTranslation } from 'react-i18next';
 
 function SEO({ description, lang, meta, title }) {
+  const { t, i18n } = useTranslation();
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -25,12 +27,13 @@ function SEO({ description, lang, meta, title }) {
     `
   );
 
-  const metaDescription = description || site.siteMetadata.description;
+  const metaDescription = description || t('common.siteDescription');
+  const pageTitle = `${title} | ${site.siteMetadata.title}`;
 
   return (
     <Helmet
       htmlAttributes={{
-        lang
+        lang: lang || i18n.language
       }}
       title={title}
       titleTemplate={`%s | ${site.siteMetadata.title}`}
@@ -41,7 +44,11 @@ function SEO({ description, lang, meta, title }) {
         },
         {
           property: `og:title`,
-          content: title
+          content: pageTitle
+        },
+        {
+          property: `og:site_name`,
+          content: site.siteMetadata.title
         },
         {
           property: `og:description`,
@@ -61,7 +68,7 @@ function SEO({ description, lang, meta, title }) {
         },
         {
           name: `twitter:title`,
-          content: title
+          content: pageTitle
         },
         {
           name: `twitter:description`,
@@ -73,7 +80,6 @@ function SEO({ description, lang, meta, title }) {
 }
 
 SEO.defaultProps = {
-  lang: `en`,
   meta: [],
   description: ``
 };

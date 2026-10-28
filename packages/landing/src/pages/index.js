@@ -1,27 +1,42 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import featureImage from '../../static/images/hero.png';
 
 const IndexPage = () => {
-  const title = 'Take Time-stamped Notes While Watching Videos!';
-  
+  const { t } = useTranslation();
+
   return (
     <Layout>
-      <SEO title={title} />
-      <div className={'page-header home'}>
+      <SEO title={t('home.seoTitle')} />
+      <section className={'page-header home'} aria-labelledby="hero-title">
         <div className="container">
-          <h1>{title}</h1>
-          <p>
-            YiNote, aka TurboNote Chrome Extension, is an effective tool to take and share notes while watching online videos. 
-            It's a must-have tool for users who work with online video materials.
-          </p>
-          <img alt={'Dashboard'} src={featureImage} />
+          <p className="eyebrow">{t('home.eyebrow')}</p>
+          <h1 id="hero-title">{t('home.title')}</h1>
+          <p className="hero-description">{t('home.description')}</p>
+          <div className="hero-actions">
+            <a
+              className="button"
+              href="https://chrome.google.com/webstore/detail/yinote/fhpgggnmdlmekfdpkdgeiccfkignhkdf"
+            >
+              {t('home.downloadChrome')}
+            </a>
+            <a href="https://addons.mozilla.org/en-CA/firefox/addon/yinote/">
+              Firefox
+            </a>
+            <a href="https://microsoftedge.microsoft.com/addons/detail/gieehphfgjfjmeejdohpdiajmicjnfbh">
+              Microsoft Edge
+            </a>
+          </div>
+          <figure className="product-preview">
+            <img alt={t('home.heroAlt')} src={featureImage} />
+            <figcaption>{t('home.caption')}</figcaption>
+          </figure>
         </div>
-      </div>
-  
+      </section>
     </Layout>
-  )
+  );
 };
 
 export default IndexPage;

@@ -34,6 +34,7 @@
     "sass": "^1.26.7"
   },
   "scripts": {
+    "test": "node --test tests/*.test.cjs",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",

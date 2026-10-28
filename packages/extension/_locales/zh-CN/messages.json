@@ -125,6 +125,9 @@
   "options_appName": {
     "message": "YiNote"
   },
+  "options_managementTitle": {
+    "message": "wildframe 笔记管理"
+  },
   "options_github": {
     "message": "访问仓库"
   },

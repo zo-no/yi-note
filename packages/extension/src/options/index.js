@@ -10,6 +10,10 @@ import App from './containers/App';
 import GlobalStyle from './globalStyle';
 import i18n from '../i18n';
 
+i18n.i18n.on('languageChanged', language => {
+  document.title = i18n.i18n.t('options:managementTitle');
+  document.documentElement.lang = language;
+});
 i18n.init();
 Logger.useDefaults();
 

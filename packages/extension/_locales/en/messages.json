@@ -127,6 +127,9 @@
   "options_appName": {
     "message": "YiNote"
   },
+  "options_managementTitle": {
+    "message": "wildframe management page"
+  },
   "options_github": {
     "message": "Visit Repository"
   },

@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: `YiNote`,
-    description: `Take & share time-stamped notes while watching videos!`,
+    title: `wildframe`,
+    description: `Keep the moments that matter with wildframe. Take and share timestamped notes while watching online videos.`,
     author: `@shuowu`
   },
   plugins: [
@@ -18,11 +18,11 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `wildframe`,
+        short_name: `wildframe`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#FF54AC`,
+        background_color: `#F3EFE6`,
+        theme_color: `#97513D`,
         display: `minimal-ui`,
         icon: `${__dirname}/static/images/favicon.png`
       }
@@ -31,9 +31,6 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-web-font-loader',
       options: {
-        google: {
-          families: ['PT Serif']
-        },
         custom: {
           families: ['Inter'],
           urls: ['/fonts/fonts.css']

@@ -1,3 +1,10 @@
 {
-  "title": "YiNote"
+  "title": "wildframe",
+  "browserExtensions": "Browser extensions",
+  "availableOn": "Available on",
+  "download": "Get {{siteTitle}} for {{browser}}",
+  "chromeStore": "Chrome Web Store",
+  "firefoxStore": "Firefox Add-ons",
+  "edgeStore": "Microsoft Edge Add-ons",
+  "language": "Language"
 }
