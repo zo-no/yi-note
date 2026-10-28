@@ -8,6 +8,10 @@ export const defaultNote = {
 };
 
 const videoNotesModel = {
+  sortOrder: 'asc',
+  setSortOrder: action((state, order) => {
+    state.sortOrder = order === 'desc' ? 'desc' : 'asc';
+  }),
   editor: {
     active: false,
     revision: 0,

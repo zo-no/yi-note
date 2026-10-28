@@ -18,6 +18,9 @@
   "bookmark_nobookmark": {
     "message": "没有书签"
   },
+  "noteContent_mode_plain": { "message": "普通" },
+  "noteContent_mode_sections": { "message": "分栏" },
+  "noteContent_help": { "message": "Markdown 帮助（在新标签页打开）" },
   "noteContent_enable": { "message": "使用分栏标签" },
   "noteContent_observation": { "message": "观察" },
   "noteContent_analysis": { "message": "拆解" },
@@ -64,6 +67,22 @@
   },
   "notesView_title": {
     "message": "笔记"
+  },
+  "notesView_sort_label": { "message": "按视频时间排序" },
+  "notesView_sort_asc": { "message": "最早 → 最晚" },
+  "notesView_sort_desc": { "message": "最晚 → 最早" },
+  "notesView_editor_timeOnSave": { "message": "保存时记录时间" },
+  "notesView_editor_originalTime": { "message": "原时间：{{time}}" },
+  "notesView_editor_shortcut": { "message": "Enter 保存 · ⌘Enter 换行" },
+  "notesView_editor_saved": { "message": "笔记已保存" },
+  "notesView_editor_savedWithoutImage": {
+    "message": "笔记已保存，当前视频无法获取截图。"
+  },
+  "notesView_editor_savedResumeBlocked": {
+    "message": "笔记已保存，请手动继续播放视频。"
+  },
+  "notesView_editor_videoUnavailable": {
+    "message": "暂时无法准备视频，草稿已保留。请等待播放器就绪后重试。"
   },
   "notesView_editor_placeholder": {
     "message": "请在此输入笔记..."
@@ -215,6 +234,12 @@
   },
   "options_settings_reload_tab_label": {
     "message": "当网址变化时重新加载面板"
+  },
+  "options_settings_resume_after_save_label": {
+    "message": "保存笔记后自动继续播放"
+  },
+  "options_settings_resume_after_save_description": {
+    "message": "默认开启，仅恢复本次编辑由插件暂停的视频。手动暂停、取消编辑或保存失败时不会续播。需同时开启“编辑笔记时暂停视频”。"
   },
   "options_settings_pause_when_editing_label": {
     "message": "当编辑笔记时暂停视频播放"

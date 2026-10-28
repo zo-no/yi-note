@@ -26,6 +26,11 @@ export default class Player {
     logger.warn('Method need to be implemented');
   }
 
+  // Unknown or non-resumable states must not authorize automatic playback.
+  async getPaused() {
+    return null;
+  }
+
   async getCurrentTime() {
     logger.warn('Method need to be implemented');
     return Promise.resolve(0);

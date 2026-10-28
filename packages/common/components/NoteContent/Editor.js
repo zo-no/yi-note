@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  IconButton,
-  TextareaAutosize,
-  Tooltip
-} from '@material-ui/core';
-import { Add, Close, HelpOutline, ViewListOutlined } from '@material-ui/icons';
+import { TextareaAutosize, Tooltip } from '@material-ui/core';
+import { Add, Close, HelpOutline } from '@material-ui/icons';
 import MarkdownEditor from '../MarkdownEditor';
 import NoteContent, { SectionIcon } from './index';
 import {
@@ -19,6 +14,8 @@ import {
 import {
   StyledEditor,
   StyledEditorToolbar,
+  StyledEditorAction,
+  StyledEditorPreview,
   StyledSections,
   StyledSectionEditor,
   StyledSectionBody
@@ -65,57 +62,76 @@ const NoteContentEditor = ({
   return (
     <StyledEditor>
       <StyledEditorToolbar>
-        {sections ? (
-          <>
-            <Button
-              size="small"
-              disabled={disabled}
-              aria-pressed={preview}
-              onClick={() => setPreview(!preview)}
-            >
-              {t(preview ? 'edit' : 'preview')}
-            </Button>
-            <Button
-              size="small"
-              disabled={disabled}
-              onClick={() => changePlainText(note.content)}
-            >
-              {t('toMarkdown')}
-            </Button>
-            {!preview && (
-              <Button
-                size="small"
-                startIcon={<Add />}
+        <StyledEditorAction
+          type="button"
+          disabled={disabled}
+          aria-pressed={!sections}
+          title={sections ? t('toMarkdown') : undefined}
+          onClick={() => {
+            if (sections) {
+              changePlainText(note.content);
+              setPreview(false);
+            }
+          }}
+        >
+          {t('mode.plain')}
+        </StyledEditorAction>
+        <StyledEditorAction
+          type="button"
+          disabled={disabled}
+          aria-pressed={!!sections}
+          onClick={() => {
+            if (!sections) enableSections();
+          }}
+        >
+          {t('mode.sections')}
+        </StyledEditorAction>
+        <StyledEditorAction
+          type="button"
+          data-preview
+          disabled={disabled}
+          aria-pressed={preview}
+          title={preview ? t('edit') : undefined}
+          onClick={() => setPreview(!preview)}
+        >
+          {t('preview')}
+        </StyledEditorAction>
+        {sections && !preview && (
+          <Tooltip title={t('add')}>
+            <span>
+              <StyledEditorAction
+                type="button"
+                aria-label={t('add')}
                 disabled={disabled}
                 onClick={() =>
                   updateSections([...sections, createSection(t('custom'))])
                 }
               >
-                {t('add')}
-              </Button>
-            )}
-          </>
-        ) : (
-          <Button
-            size="small"
-            variant="outlined"
-            startIcon={<ViewListOutlined />}
-            disabled={disabled}
-            onClick={enableSections}
-          >
-            {t('enable')}
-          </Button>
+                <Add />
+              </StyledEditorAction>
+            </span>
+          </Tooltip>
         )}
         <Tooltip title={t('hint')}>
-          <span>
-            <IconButton size="small" aria-label={t('hint')} disabled={disabled}>
-              <HelpOutline fontSize="small" />
-            </IconButton>
-          </span>
+          <StyledEditorAction
+            as="a"
+            href="https://guides.github.com/features/mastering-markdown/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t('help')}
+          >
+            <HelpOutline />
+          </StyledEditorAction>
         </Tooltip>
       </StyledEditorToolbar>
-      {!sections ? (
+      {preview ? (
+        <StyledEditorPreview>
+          <NoteContent note={note} />
+        </StyledEditorPreview>
+      ) : !sections ? (
         <MarkdownEditor
+          compact
+          hideToolbar
           content={note.content || ''}
           placeholder={placeholder}
           disabled={disabled}
@@ -126,8 +142,6 @@ const NoteContentEditor = ({
             onKeyDown ? event => onKeyDown(event, changePlainText) : undefined
           }
         />
-      ) : preview ? (
-        <NoteContent note={note} />
       ) : (
         <StyledSections>
           {sections.map(section => (
@@ -171,8 +185,8 @@ const NoteContentEditor = ({
               </StyledSectionBody>
               <Tooltip title={t('remove')}>
                 <span>
-                  <IconButton
-                    size="small"
+                  <StyledEditorAction
+                    type="button"
                     aria-label={t('remove')}
                     disabled={disabled || sections.length === 1}
                     onClick={() => {
@@ -183,8 +197,8 @@ const NoteContentEditor = ({
                       }
                     }}
                   >
-                    <Close fontSize="small" />
-                  </IconButton>
+                    <Close />
+                  </StyledEditorAction>
                 </span>
               </Tooltip>
             </StyledSectionEditor>

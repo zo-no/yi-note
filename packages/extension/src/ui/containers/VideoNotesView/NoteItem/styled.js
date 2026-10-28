@@ -29,7 +29,11 @@ export const StyledMainRow = styled(Grid)`
 `;
 
 export const StyledExpandedSection = styled(Grid)`
-  display: ${props => (props.expanded ? 'flex' : 'none')};
+  display: flex;
+
+  &[hidden] {
+    display: none;
+  }
   padding: 16px;
   border-top: 1px solid ${props => props.theme.tokens.colors.border};
   max-height: 400px;
@@ -39,7 +43,11 @@ export const StyledExpandedSection = styled(Grid)`
 `;
 
 export const StyledExpandMoreIcon = styled(ExpandIcon)`
-  transform: ${({ expanded }) => expanded && 'rotate(90deg)'};
+  transform: rotate(0deg);
+
+  &[data-expanded='true'] {
+    transform: rotate(90deg);
+  }
   transition: transform 0.1s ease-in-out;
 
   @media (prefers-reduced-motion: reduce) {

@@ -29,16 +29,26 @@ export default class HTML5Player extends Player {
   }
 
   play() {
-    this.video.play();
+    return this.video.play();
   }
 
   pause() {
-    this.video.pause();
+    return this.video.pause();
   }
 
   seek(timestamp) {
     const timeToSeek = timestamp - this.seekSeconds;
     this.video.currentTime = timeToSeek >= 0 ? timeToSeek : 0;
+  }
+
+  async getPaused() {
+    try {
+      if (this.video.ended) return null;
+      const paused = this.video.paused;
+      return typeof paused === 'boolean' ? paused : null;
+    } catch {
+      return null;
+    }
   }
 
   async getCurrentTime() {

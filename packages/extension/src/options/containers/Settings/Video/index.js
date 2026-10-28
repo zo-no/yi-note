@@ -17,7 +17,8 @@ import {
   KEY_APPLY_SEEK_SEC_ON_URL,
   KEY_RELOAD_TAB,
   KEY_RELOAD_TAB_ALLOWED_DOMAINS,
-  KEY_PAUSE_VIDEO_WHEN_EDITING
+  KEY_PAUSE_VIDEO_WHEN_EDITING,
+  KEY_RESUME_VIDEO_AFTER_SAVE
 } from '@yi-note/common/constants';
 
 const Video = () => {
@@ -28,7 +29,8 @@ const Video = () => {
       [KEY_APPLY_SEEK_SEC_ON_URL]: applySeekSecondsOnUrl = false,
       [KEY_RELOAD_TAB]: reloadTab = false,
       [KEY_RELOAD_TAB_ALLOWED_DOMAINS]: reloadTabDomains = [],
-      [KEY_PAUSE_VIDEO_WHEN_EDITING]: pauseWhenEditing = false
+      [KEY_PAUSE_VIDEO_WHEN_EDITING]: pauseWhenEditing = false,
+      [KEY_RESUME_VIDEO_AFTER_SAVE]: resumeAfterSave = true
     }
   } = useStoreState(state => state.settings);
   const { setSetting } = useStoreActions(actions => actions.settings);
@@ -73,6 +75,10 @@ const Video = () => {
   const handlePauseWhenEditingChange = e => {
     const { checked } = e.target;
     setSetting({ [KEY_PAUSE_VIDEO_WHEN_EDITING]: checked });
+  };
+
+  const handleResumeAfterSaveChange = e => {
+    setSetting({ [KEY_RESUME_VIDEO_AFTER_SAVE]: e.target.checked });
   };
 
   return (
@@ -130,6 +136,34 @@ const Video = () => {
             checked={pauseWhenEditing}
             onChange={handlePauseWhenEditingChange}
             name="pauseWhenEditing"
+            inputProps={{
+              'aria-label': t('settings.pause.when.editing.label')
+            }}
+          />
+        </Grid>
+      </Grid>
+      <Grid item container spacing={1} alignItems="center">
+        <Grid item xs>
+          <Typography variant="subtitle1" id="resume-after-save-label">
+            {t('settings.resume.after.save.label')}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            id="resume-after-save-description"
+          >
+            {t('settings.resume.after.save.description')}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Switch
+            checked={resumeAfterSave}
+            onChange={handleResumeAfterSaveChange}
+            name="resumeAfterSave"
+            inputProps={{
+              'aria-labelledby': 'resume-after-save-label',
+              'aria-describedby': 'resume-after-save-description'
+            }}
           />
         </Grid>
       </Grid>

@@ -45,6 +45,23 @@ export default class YoutubeIframePlayer extends Player {
     this.#player.seekTo(timeToSeek >= 0 ? timeToSeek : 0);
   }
 
+  async getPaused() {
+    try {
+      switch (this.#player.getPlayerState()) {
+        case 1: // Playing
+        case 3: // Buffering
+          return false;
+        case 2: // Paused
+          return true;
+        default:
+          // Unstarted, ended, cued or unavailable
+          return null;
+      }
+    } catch {
+      return null;
+    }
+  }
+
   async getCurrentTime() {
     return new Promise((resolve, reject) => {
       const currentTime = this.#player.getCurrentTime();

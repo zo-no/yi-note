@@ -73,7 +73,7 @@ export const StyledLabel = styled.div`
 
 export const StyledEditor = styled.div`
   display: grid;
-  gap: ${itemGap}px;
+  gap: 4px;
   width: 100%;
   min-width: 0;
 `;
@@ -81,19 +81,92 @@ export const StyledEditor = styled.div`
 export const StyledEditorToolbar = styled.div`
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
+  flex-wrap: nowrap;
+  gap: 2px;
   min-width: 0;
+  padding: 4px;
+  overflow-x: auto;
 
-  & > button {
-    min-width: 0;
-    max-width: 100%;
-    min-height: 28px;
-    padding: 2px 6px;
+  & > span {
+    display: inline-flex;
+    flex-shrink: 0;
   }
 
-  & > span button {
-    padding: 4px;
+  & > [data-preview] {
+    margin-left: auto;
+  }
+`;
+
+export const StyledEditorAction = styled.button`
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 28px;
+  min-height: 28px;
+  margin: 0;
+  padding: 3px 6px;
+  border: 0;
+  border-radius: ${props => props.theme.tokens.radius.small / 2}px;
+  background: transparent;
+  color: ${props => props.theme.tokens.colors.muted};
+  box-shadow: none;
+  font-family: ${props => props.theme.tokens.fonts.body};
+  font-size: ${props => props.theme.tokens.fontSizes.auxiliary}px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-decoration: none;
+  text-transform: none;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &[aria-pressed='true'] {
+    background: ${props => props.theme.tokens.colors.hover};
+    color: ${props => props.theme.tokens.colors.action};
+    font-weight: 600;
+  }
+
+  &:hover:not(:disabled) {
+    background: ${props => props.theme.tokens.colors.inset};
+    color: ${props => props.theme.tokens.colors.ink};
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${props => props.theme.tokens.colors.action};
+    outline-offset: 0;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  & svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+export const StyledEditorPreview = styled.div`
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: calc(3 * 1.6em + 16px);
+  max-height: calc(12 * 1.6em + 16px);
+  padding: 8px;
+  border: 1px solid ${props => props.theme.tokens.colors.border};
+  border-radius: ${props => props.theme.tokens.radius.small}px;
+  background: ${props => props.theme.tokens.colors.surface};
+  font-size: ${props => props.theme.tokens.fontSizes.compact}px;
+  line-height: 1.6;
+  overflow: auto;
+
+  & .markdown-body {
+    min-width: 0;
+    max-width: 100%;
+    font-size: inherit;
+    overflow-wrap: anywhere;
   }
 `;
 
@@ -130,6 +203,7 @@ export const StyledSectionEditor = styled(StyledSection)`
     border-radius: ${props => props.theme.tokens.radius.small / 2}px;
     color: ${props => props.theme.tokens.colors.ink};
     background: transparent;
+    box-shadow: none;
     font-family: ${props => props.theme.tokens.fonts.body};
     font-size: ${props => props.theme.tokens.fontSizes.compact}px;
     line-height: 1.6;
@@ -142,10 +216,9 @@ export const StyledSectionEditor = styled(StyledSection)`
 
   & textarea:not([aria-hidden='true']) {
     min-height: calc(1.6em + 8px);
-    resize: vertical;
+    resize: none;
     overflow-wrap: anywhere;
-    /* Keep content reachable when manually resized below the autosized height. */
-    overflow-y: auto !important;
+    overflow-y: auto;
   }
 
   & input:hover:not(:disabled),
@@ -154,9 +227,13 @@ export const StyledSectionEditor = styled(StyledSection)`
   }
 
   & input:focus,
-  & textarea:focus {
-    outline: 2px solid ${props => props.theme.tokens.colors.action};
-    outline-offset: -2px;
+  & input:focus-visible,
+  & textarea:focus,
+  & textarea:focus-visible {
+    border-color: ${props => props.theme.tokens.colors.action};
+    /* Override the APP_ID global ring; the existing 1px border shows focus. */
+    outline: none !important;
+    box-shadow: none;
   }
 
   & input::placeholder,

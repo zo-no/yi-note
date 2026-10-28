@@ -18,6 +18,9 @@
   "bookmark_nobookmark": {
     "message": "No Bookmark"
   },
+  "noteContent_mode_plain": { "message": "Plain" },
+  "noteContent_mode_sections": { "message": "Sections" },
+  "noteContent_help": { "message": "Markdown guide (opens in a new tab)" },
   "noteContent_enable": { "message": "Use section labels" },
   "noteContent_observation": { "message": "Observation" },
   "noteContent_analysis": { "message": "Breakdown" },
@@ -66,6 +69,22 @@
   },
   "notesView_title": {
     "message": "Notes"
+  },
+  "notesView_sort_label": { "message": "Sort by video timestamp" },
+  "notesView_sort_asc": { "message": "Earliest → latest" },
+  "notesView_sort_desc": { "message": "Latest → earliest" },
+  "notesView_editor_timeOnSave": { "message": "Time set on save" },
+  "notesView_editor_originalTime": { "message": "Original: {{time}}" },
+  "notesView_editor_shortcut": { "message": "Enter: save · ⌘Enter: newline" },
+  "notesView_editor_saved": { "message": "Note saved" },
+  "notesView_editor_savedWithoutImage": {
+    "message": "Note saved. A screenshot was unavailable for this video."
+  },
+  "notesView_editor_savedResumeBlocked": {
+    "message": "Note saved. Please resume the video manually."
+  },
+  "notesView_editor_videoUnavailable": {
+    "message": "Unable to prepare the video. Your draft is kept; retry when the player is ready."
   },
   "notesView_editor_placeholder": {
     "message": "Please type the note here..."
@@ -217,6 +236,12 @@
   },
   "options_settings_reload_tab_label": {
     "message": "Reload tab when url change"
+  },
+  "options_settings_resume_after_save_label": {
+    "message": "Resume video after saving a note"
+  },
+  "options_settings_resume_after_save_description": {
+    "message": "Enabled by default. Only resumes playback paused by this editing session. Manual pauses, canceled edits and failed saves do not resume. Requires pause when editing to be enabled."
   },
   "options_settings_pause_when_editing_label": {
     "message": "Pause video when editing note"

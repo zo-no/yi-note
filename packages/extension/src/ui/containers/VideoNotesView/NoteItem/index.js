@@ -35,7 +35,7 @@ const NoteItem = ({ note }) => {
   } = useStoreActions(actions => actions);
   const [expanded, setExpanded] = useState(false);
 
-  const handleExpand = () => setExpanded(!expanded);
+  const handleExpand = () => setExpanded(previous => !previous);
 
   const handlePlay = async () => {
     if (!hasTimestamp) return;
@@ -52,7 +52,7 @@ const NoteItem = ({ note }) => {
     });
 
   return (
-    <StyledCard container data-expanded={expanded}>
+    <StyledCard container data-note-id={id} data-expanded={expanded}>
       <StyledMainRow
         item
         container
@@ -77,7 +77,7 @@ const NoteItem = ({ note }) => {
         </Grid>
         <Grid item>
           <Grid container direction="row" alignItems="center">
-            {!expanded && <StyledTimestamp>{formattedTime}</StyledTimestamp>}
+            <StyledTimestamp>{formattedTime}</StyledTimestamp>
             <IconButton
               tooltip={
                 expanded ? t('note.collapse.tooltip') : t('note.expand.tooltip')
@@ -86,48 +86,47 @@ const NoteItem = ({ note }) => {
               aria-controls={`wildframe-note-${id}`}
               onClick={handleExpand}
             >
-              <StyledExpandMoreIcon
-                expanded={expanded ? expanded : undefined}
-              />
+              <StyledExpandMoreIcon data-expanded={expanded} />
             </IconButton>
           </Grid>
         </Grid>
       </StyledMainRow>
       <StyledExpandedSection
         id={`wildframe-note-${id}`}
-        expanded={expanded ? expanded : undefined}
+        hidden={!expanded}
         item
         direction="column"
         container
       >
-        <Grid container spacing={1}>
-          <Grid item container justify="space-between" alignItems="center">
-            <StyledTimestamp>{formattedTime}</StyledTimestamp>
-            <Grid item>
-              <Grid container direction="row">
-                <IconButton
-                  size="small"
-                  tooltip={t('note:edit.tooltip')}
-                  onClick={handleEdit}
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  tooltip={t('note:remove.tooltip')}
-                  onClick={handleDelete}
-                >
-                  <DeleteIcon />
-                </IconButton>
+        {expanded && (
+          <Grid container spacing={1}>
+            <Grid item container justify="flex-end" alignItems="center">
+              <Grid item>
+                <Grid container direction="row">
+                  <IconButton
+                    size="small"
+                    tooltip={t('note:edit.tooltip')}
+                    onClick={handleEdit}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    tooltip={t('note:remove.tooltip')}
+                    onClick={handleDelete}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Grid>
               </Grid>
             </Grid>
+            <Grid item xs={12}>
+              <StyledNote>
+                <NoteContent note={note} />
+              </StyledNote>
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <StyledNote>
-              <NoteContent note={note} />
-            </StyledNote>
-          </Grid>
-        </Grid>
+        )}
       </StyledExpandedSection>
     </StyledCard>
   );

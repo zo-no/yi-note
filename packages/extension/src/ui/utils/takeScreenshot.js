@@ -9,17 +9,17 @@ import {
  * Use 360p - 640 * 360 by default
  *
  * @param element - dom element
- * @param width
- * @param height
+ * @param providedSettings - optional loaded settings, to capture without async storage delay
  *
  * @return image dataUri
  */
-export default async element => {
-  // TODO: pass in options instead of use settings from storage
-  const settings = await StorageService.getStorage().getSettings();
-  const { x, y } = SCREENSHOT_RESOLUTION[
-    settings[KEY_SCREENSHOT_RESOLUTION] || 360
-  ];
+export default async (element, providedSettings) => {
+  // The save path supplies settings so the frame is drawn before yielding.
+  const settings =
+    providedSettings || (await StorageService.getStorage().getSettings()) || {};
+  const { x, y } =
+    SCREENSHOT_RESOLUTION[settings[KEY_SCREENSHOT_RESOLUTION]] ||
+    SCREENSHOT_RESOLUTION[360];
 
   if (!element) {
     logger.error('Missing element');
