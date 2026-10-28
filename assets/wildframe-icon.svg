@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">wildframe camera</title>
+  <desc id="desc">An original retro camera character, drawn from a written description: a cream face, dark lens, tiny eye, terracotta domed hat and short dark arms on a warm rounded tile.</desc>
+  <rect width="512" height="512" rx="112" fill="#F3EFE6"/>
+  <g id="camera">
+    <path d="M111 269C94 262 77 268 74 284L71 307C69 320 78 330 91 329L116 322Z" fill="#292D2A"/>
+    <path d="M401 269C418 262 435 268 438 284L441 307C443 320 434 330 421 329L396 322Z" fill="#292D2A"/>
+    <rect x="337" y="184" width="49" height="36" rx="9" fill="#AB634F"/>
+    <path d="M350 194H372" fill="none" stroke="#FFFCF7" stroke-width="5" stroke-linecap="round"/>
+    <rect x="102" y="204" width="308" height="194" rx="49" fill="#292D2A"/>
+    <rect x="120" y="237" width="272" height="141" rx="32" fill="#F3EFE6"/>
+    <path d="M164 186C166 143 190 110 226 109C266 107 294 138 303 186Z" fill="#AB634F"/>
+    <path d="M166 174C205 184 262 184 299 173L303 190H162Z" fill="#97513D"/>
+    <path d="M186 154C191 140 202 130 215 127" fill="none" stroke="#F3EFE6" stroke-opacity=".45" stroke-width="6" stroke-linecap="round"/>
+    <rect x="143" y="184" width="181" height="29" rx="14.5" fill="#97513D"/>
+    <circle cx="224" cy="306" r="81" fill="#292D2A"/>
+    <circle cx="224" cy="306" r="72" fill="#FFFCF7"/>
+    <circle cx="224" cy="306" r="58" fill="#292D2A"/>
+    <path d="M259 284C267 296 266 311 259 322" fill="none" stroke="#879284" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="205" cy="286" rx="14" ry="16" transform="rotate(35 205 286)" fill="#FFFCF7"/>
+    <circle cx="245" cy="319" r="6" fill="#FFFCF7"/>
+    <circle cx="349" cy="280" r="12" fill="#292D2A"/>
+    <path d="M337 317C343 325 354 325 360 317" fill="none" stroke="#292D2A" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>
