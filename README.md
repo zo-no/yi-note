@@ -112,6 +112,8 @@ For more information about how to develop browser extensions, please refer to [C
 
 ## About the project
 
+For a source-level overview and customization entry points, see the [Architecture and customization guide (中文)](ARCHITECTURE.md).
+
 ### Project components
 
 This extension inject [content script](https://developer.chrome.com/extensions/content_scripts) to display UI widget and interact with host page.
