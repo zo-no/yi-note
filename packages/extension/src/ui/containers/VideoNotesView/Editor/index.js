@@ -4,14 +4,27 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import { secondsToTime } from '@yi-note/common/utils';
-import { MarkdownEditor } from '@yi-note/common/components';
+import NoteContentEditor from '@yi-note/common/components/NoteContent/Editor';
 import useNoteEditor from '../../../hooks/useNoteEditor';
 import TextButton from '../../../components/TextButton';
 
 import handleNoteEditorKeyDown from '../../../utils/handleNoteEditorKeyDown';
 
 const StyledStatus = styled.span`
-  font-weight: bold;
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: ${props => props.theme.tokens.radius.pill}px;
+  background: ${props => props.theme.tokens.colors.sageSoft};
+  color: ${props => props.theme.tokens.colors.ink};
+  font-size: ${props => props.theme.tokens.fontSizes.auxiliary}px;
+  font-weight: 600;
+`;
+
+const StyledTimestamp = styled.span`
+  font-family: ${props => props.theme.tokens.fonts.mono};
+  font-size: ${props => props.theme.tokens.fontSizes.auxiliary}px;
+  font-variant-numeric: tabular-nums;
+  color: ${props => props.theme.tokens.colors.muted};
 `;
 
 const Editor = () => {
@@ -34,15 +47,14 @@ const Editor = () => {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        <MarkdownEditor
-          disabled={disabled}
-          readOnly={saving}
-          content={note.content}
+        <NoteContentEditor
+          disabled={disabled || saving}
+          note={note}
           placeholder={t('editor.placeholder')}
           onChange={handleChange}
           onFocus={handleFocus}
-          onKeyDown={event =>
-            handleNoteEditorKeyDown(event, handleSave, handleChange)
+          onKeyDown={(event, changeField) =>
+            handleNoteEditorKeyDown(event, handleSave, changeField)
           }
         />
       </Grid>
@@ -54,7 +66,7 @@ const Editor = () => {
       {active && (
         <Grid item container alignItems="center">
           <Grid item xs={6}>
-            <Grid container spacing={1}>
+            <Grid container spacing={1} alignItems="center">
               <Grid item>
                 {note.id ? (
                   <StyledStatus>{t('editor.statusExisting')}</StyledStatus>
@@ -62,7 +74,11 @@ const Editor = () => {
                   <StyledStatus>{t('editor.statusNew')}</StyledStatus>
                 )}
               </Grid>
-              <Grid item>{secondsToTime(note.timestamp)}</Grid>
+              <Grid item>
+                <StyledTimestamp>
+                  {secondsToTime(note.timestamp)}
+                </StyledTimestamp>
+              </Grid>
             </Grid>
           </Grid>
           <Grid item xs={6}>
@@ -73,7 +89,11 @@ const Editor = () => {
                 </TextButton>
               </Grid>
               <Grid item>
-                <TextButton onClick={handleSave} disabled={saving || disabled}>
+                <TextButton
+                  primary
+                  onClick={handleSave}
+                  disabled={saving || disabled}
+                >
                   {t(saving ? 'editor.saving' : 'editor.saveButton')}
                 </TextButton>
               </Grid>

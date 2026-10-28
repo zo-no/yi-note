@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from 'easy-peasy';
 import { storage as StorageService } from '@yi-note/common/services';
+import { hasNoteContent } from '@yi-note/common/utils/noteSections';
 import {
   TYPE_VIDEO_NOTE,
   KEY_PAUSE_VIDEO_WHEN_EDITING
@@ -92,9 +93,16 @@ export default () => {
     });
   };
 
-  const handleChange = content => {
+  const handleChange = value => {
     if (savingRef.current || store.getState().app.showingAd) return;
-    actions.videoNotes.editor.setNote({ content });
+    const patch =
+      typeof value === 'string'
+        ? {
+            content: value,
+            ...(getEditor().note.sections ? { sections: [] } : {})
+          }
+        : value;
+    actions.videoNotes.editor.setNote(patch);
     setError(null);
     // Enter saves without blurring; the next draft may never receive onFocus.
     handleFocus();
@@ -103,7 +111,7 @@ export default () => {
   const handleSave = async () => {
     if (savingRef.current || store.getState().app.showingAd) return;
     const { note, revision } = getEditor();
-    if (!(note.content || '').trim()) return;
+    if (!hasNoteContent(note)) return;
 
     savingRef.current = true;
     setSaving(true);

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Grid, CircularProgress } from '@material-ui/core';
 
 const StyledContainer = styled(Grid)`
-  padding: 20px;
+  padding: 24px;
   & svg {
     width: 40px;
     height: 40px;

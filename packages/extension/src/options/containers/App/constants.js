@@ -1,2 +1,4 @@
-export const drawerWidth = 240;
-export const headerHeight = 60;
+import { tokens } from '@yi-note/common/theme';
+
+export const drawerWidth = tokens.layout.navigationWidth;
+export const headerHeight = tokens.layout.toolbarHeight;

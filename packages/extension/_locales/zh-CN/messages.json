@@ -18,6 +18,23 @@
   "bookmark_nobookmark": {
     "message": "没有书签"
   },
+  "noteContent_enable": { "message": "使用分栏标签" },
+  "noteContent_observation": { "message": "观察" },
+  "noteContent_analysis": { "message": "拆解" },
+  "noteContent_takeaway": { "message": "借鉴" },
+  "noteContent_custom": { "message": "自定义标签" },
+  "noteContent_add": { "message": "添加分栏" },
+  "noteContent_remove": { "message": "从草稿中移除此分栏" },
+  "noteContent_label": { "message": "分栏标签名称" },
+  "noteContent_body": { "message": "笔记内容" },
+  "noteContent_sectionBody": { "message": "{{label}}的内容" },
+  "noteContent_placeholder": { "message": "填写这一栏的笔记…" },
+  "noteContent_hint": {
+    "message": "标签可以改名，也可以新增分栏。内容支持 Markdown，点击保存笔记后生效。"
+  },
+  "noteContent_edit": { "message": "编辑" },
+  "noteContent_preview": { "message": "预览" },
+  "noteContent_toMarkdown": { "message": "转为 Markdown" },
   "note_edit_tooltip": {
     "message": "编辑笔记"
   },
@@ -129,6 +146,16 @@
   "options_bookmarks_export_format_label": {
     "message": "导出格式:"
   },
+  "options_navigation_toggle": { "message": "展开或收起导航" },
+  "options_page_back": { "message": "返回书签" },
+  "options_page_untitled": { "message": "未命名视频" },
+  "options_page_emptyHint": {
+    "message": "打开视频，添加笔记后即可在这里查看。"
+  },
+  "options_page_export_menu": { "message": "导出或发送笔记" },
+  "options_page_description_title": { "message": "视频简介" },
+  "options_page_description_expand": { "message": "展开" },
+  "options_page_description_collapse": { "message": "收起" },
   "options_page_title": {
     "message": "页面详情"
   },

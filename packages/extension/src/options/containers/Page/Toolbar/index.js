@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 import { useStoreState, useStoreActions } from 'easy-peasy';
-import { Tooltip, IconButton } from '@material-ui/core';
+import {
+  Tooltip,
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText
+} from '@material-ui/core';
 import {
   OpenInNew as OpenInNewIcon,
   PictureAsPdfOutlined as PDFIcon,
-  LocalOfferOutlined as TagIcon
+  LocalOfferOutlined as TagIcon,
+  GetApp as ExportIcon
 } from '@material-ui/icons';
 import {
   EvernoteIcon,
@@ -22,8 +31,25 @@ import {
 import { capitalize } from '@yi-note/common/utils';
 import { APP_ID } from '@yi-note/common/constants';
 
+const StyledToolbar = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  color: ${props => props.theme.tokens.colors.ink};
+
+  & button {
+    padding: 8px;
+  }
+
+  & svg {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
 const Toolbar = () => {
   const { t } = useTranslation('options');
+  const [exportAnchor, setExportAnchor] = useState(null);
   const {
     data: { id, meta = {}, notes }
   } = useStoreState(state => state.page);
@@ -111,53 +137,86 @@ const Toolbar = () => {
     window.open(meta.url, '_blank');
   };
 
+  const exportItems = [
+    { key: 'page.pdf.tooltip', icon: <PDFIcon />, run: handleGeneratePDF },
+    {
+      key: 'page.export.markdown.tooltip',
+      icon: <MarkdownIcon fill="currentColor" />,
+      run: handleExportMarkdown
+    },
+    {
+      key: 'page.evernote.tooltip',
+      icon: <EvernoteIcon fill="currentColor" />,
+      run: () => handleSendNotesToService('evernote')
+    },
+    {
+      key: 'page.googledocs.tooltip',
+      icon: <GoogleDocsIcon fill="currentColor" />,
+      run: () => handleSendNotesToService('googledocs')
+    },
+    {
+      key: 'page.onenote.tooltip',
+      icon: <OneNoteIcon fill="currentColor" />,
+      run: () => handleSendNotesToService('onenote')
+    }
+  ];
+
   return (
-    <>
+    <StyledToolbar>
       <Tooltip title={t('page.tag.tooltip')}>
-        <IconButton color="inherit" onClick={handleAddTag}>
+        <IconButton
+          color="inherit"
+          aria-label={t('page.tag.tooltip')}
+          onClick={handleAddTag}
+        >
           <TagIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title={t('page.pdf.tooltip')}>
-        <IconButton color="inherit" onClick={handleGeneratePDF}>
-          <PDFIcon />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title={t('page.evernote.tooltip')}>
+      <Tooltip title={t('page.export.menu')}>
         <IconButton
           color="inherit"
-          onClick={handleSendNotesToService.bind(null, 'evernote')}
+          aria-label={t('page.export.menu')}
+          aria-haspopup="true"
+          aria-expanded={!!exportAnchor}
+          aria-controls={exportAnchor ? 'page-export-menu' : undefined}
+          onClick={event => setExportAnchor(event.currentTarget)}
         >
-          <EvernoteIcon fill="#ffffff" />
+          <ExportIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title={t('page.googledocs.tooltip')}>
-        <IconButton
-          color="inherit"
-          onClick={handleSendNotesToService.bind(null, 'googledocs')}
-        >
-          <GoogleDocsIcon fill="#ffffff" />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title={t('page.onenote.tooltip')}>
-        <IconButton
-          color="inherit"
-          onClick={handleSendNotesToService.bind(null, 'onenote')}
-        >
-          <OneNoteIcon fill="#ffffff" />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title={t('page.export.markdown.tooltip')}>
-        <IconButton color="inherit" onClick={handleExportMarkdown}>
-          <MarkdownIcon fill="#ffffff" />
-        </IconButton>
-      </Tooltip>
+      <Menu
+        id="page-export-menu"
+        anchorEl={exportAnchor}
+        open={!!exportAnchor}
+        onClose={() => setExportAnchor(null)}
+        getContentAnchorEl={null}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        MenuListProps={{ 'aria-label': t('page.export.menu') }}
+      >
+        {exportItems.map(item => (
+          <MenuItem
+            key={item.key}
+            onClick={() => {
+              setExportAnchor(null);
+              item.run();
+            }}
+          >
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={t(item.key)} />
+          </MenuItem>
+        ))}
+      </Menu>
       <Tooltip title={t('page.open.tooltip')}>
-        <IconButton color="inherit" onClick={handleOpenPage}>
+        <IconButton
+          color="inherit"
+          aria-label={t('page.open.tooltip')}
+          onClick={handleOpenPage}
+        >
           <OpenInNewIcon />
         </IconButton>
       </Tooltip>
-    </>
+    </StyledToolbar>
   );
 };
 

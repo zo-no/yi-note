@@ -8,10 +8,12 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon
 } from '@material-ui/icons';
-import { IconButton, MarkdownViewer } from '@yi-note/common/components';
+import { IconButton } from '@yi-note/common/components';
+import NoteContent from '@yi-note/common/components/NoteContent';
 import { secondsToTime } from '@yi-note/common/utils';
 import Markdown from '@yi-note/common/services/markdown';
 import {
+  StyledCard,
   StyledMainRow,
   StyledSummary,
   StyledTimestamp,
@@ -50,7 +52,7 @@ const NoteItem = ({ note }) => {
     });
 
   return (
-    <Grid container>
+    <StyledCard container data-expanded={expanded}>
       <StyledMainRow
         item
         container
@@ -62,7 +64,6 @@ const NoteItem = ({ note }) => {
           <Grid container direction="row" alignItems="center">
             {hasTimestamp ? (
               <IconButton
-                color="red"
                 tooltip={t('note.play.tooltip', { formattedTime })}
                 onClick={handlePlay}
               >
@@ -81,6 +82,8 @@ const NoteItem = ({ note }) => {
               tooltip={
                 expanded ? t('note.collapse.tooltip') : t('note.expand.tooltip')
               }
+              aria-expanded={expanded}
+              aria-controls={`wildframe-note-${id}`}
               onClick={handleExpand}
             >
               <StyledExpandMoreIcon
@@ -91,6 +94,7 @@ const NoteItem = ({ note }) => {
         </Grid>
       </StyledMainRow>
       <StyledExpandedSection
+        id={`wildframe-note-${id}`}
         expanded={expanded ? expanded : undefined}
         item
         direction="column"
@@ -118,14 +122,14 @@ const NoteItem = ({ note }) => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid item xs={12}>
             <StyledNote>
-              <MarkdownViewer content={content} />
+              <NoteContent note={note} />
             </StyledNote>
           </Grid>
         </Grid>
       </StyledExpandedSection>
-    </Grid>
+    </StyledCard>
   );
 };
 

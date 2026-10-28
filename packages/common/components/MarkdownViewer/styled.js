@@ -1,10 +1,10 @@
 import styled from 'styled-components';
+import { tokens } from '../../theme';
 
 export const StyledMarkdownBody = styled.div`
-  font-size: 14px !important;
-  width: -webkit-fill-available;
-  width: -moz-available;
-  word-break: break-all;
+  font-size: ${tokens.fontSizes.compact}px;
+  width: 100%;
+  min-width: 0;
   word-break: break-word;
 
   &.markdown-body .octicon {
@@ -21,7 +21,7 @@ export const StyledMarkdownBody = styled.div`
   }
 
   &.markdown-body .anchor:focus {
-    outline: none;
+    outline: 2px solid ${tokens.colors.action};
   }
 
   &.markdown-body h1 .octicon-link,
@@ -30,7 +30,7 @@ export const StyledMarkdownBody = styled.div`
   &.markdown-body h4 .octicon-link,
   &.markdown-body h5 .octicon-link,
   &.markdown-body h6 .octicon-link {
-    color: #1b1f23;
+    color: ${tokens.colors.ink};
     vertical-align: middle;
     visibility: hidden;
   }
@@ -69,11 +69,10 @@ export const StyledMarkdownBody = styled.div`
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     line-height: 1.5;
-    color: #24292e;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial,
-      sans-serif, Apple Color Emoji, Segoe UI Emoji;
-    font-size: 16px;
-    line-height: 1.5;
+    color: ${tokens.colors.ink};
+    font-family: ${tokens.fonts.body};
+    font-size: ${tokens.fontSizes.compact}px;
+    line-height: 1.6;
     word-wrap: break-word;
   }
 
@@ -100,7 +99,7 @@ export const StyledMarkdownBody = styled.div`
   }
 
   &.markdown-body h1 {
-    font-size: 2em;
+    font-size: 32px;
     margin: 0.67em 0;
   }
 
@@ -111,7 +110,7 @@ export const StyledMarkdownBody = styled.div`
   &.markdown-body code,
   &.markdown-body kbd,
   &.markdown-body pre {
-    font-family: monospace, monospace;
+    font-family: ${tokens.fonts.mono};
     font-size: 1em;
   }
 
@@ -146,7 +145,7 @@ export const StyledMarkdownBody = styled.div`
   }
 
   &.markdown-body a {
-    color: #0366d6;
+    color: ${tokens.colors.action};
     text-decoration: none;
   }
 
@@ -160,11 +159,11 @@ export const StyledMarkdownBody = styled.div`
 
   &.markdown-body hr {
     height: 0;
-    margin: 15px 0;
+    margin: 16px 0;
     overflow: hidden;
     background: transparent;
     border: 0;
-    border-bottom: 1px solid #dfe2e5;
+    border-bottom: 1px solid ${tokens.colors.border};
   }
 
   &.markdown-body hr:after,
@@ -193,15 +192,16 @@ export const StyledMarkdownBody = styled.div`
 
   &.markdown-body kbd {
     display: inline-block;
-    padding: 3px 5px;
-    font: 11px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
-    line-height: 10px;
-    color: #444d56;
+    padding: 4px 8px;
+    font-family: ${tokens.fonts.mono};
+    font-size: 12px;
+    line-height: 1.5;
+    color: ${tokens.colors.muted};
     vertical-align: middle;
-    background-color: #fafbfc;
-    border: 1px solid #d1d5da;
-    border-radius: 3px;
-    box-shadow: inset 0 -1px 0 #d1d5da;
+    background-color: ${tokens.colors.canvas};
+    border: 1px solid ${tokens.colors.border};
+    border-radius: ${tokens.radius.small}px;
+    box-shadow: inset 0 -1px 0 ${tokens.colors.border};
   }
 
   &.markdown-body h1,
@@ -287,7 +287,7 @@ export const StyledMarkdownBody = styled.div`
 
   &.markdown-body code,
   &.markdown-body pre {
-    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    font-family: ${tokens.fonts.mono};
     font-size: 12px;
   }
 
@@ -306,11 +306,11 @@ export const StyledMarkdownBody = styled.div`
   &.markdown-body :checked + .radio-label {
     position: relative;
     z-index: 1;
-    border-color: #0366d6;
+    border-color: ${tokens.colors.action};
   }
 
   &.markdown-body .border {
-    border: 1px solid #e1e4e8 !important;
+    border: 1px solid ${tokens.colors.border} !important;
   }
 
   &.markdown-body .border-0 {
@@ -318,23 +318,23 @@ export const StyledMarkdownBody = styled.div`
   }
 
   &.markdown-body .border-bottom {
-    border-bottom: 1px solid #e1e4e8 !important;
+    border-bottom: 1px solid ${tokens.colors.border} !important;
   }
 
   &.markdown-body .rounded-1 {
-    border-radius: 3px !important;
+    border-radius: ${tokens.radius.small}px !important;
   }
 
   &.markdown-body .bg-white {
-    background-color: #fff !important;
+    background-color: ${tokens.colors.surface} !important;
   }
 
   &.markdown-body .bg-gray-light {
-    background-color: #fafbfc !important;
+    background-color: ${tokens.colors.canvas} !important;
   }
 
   &.markdown-body .text-gray-light {
-    color: #6a737d !important;
+    color: ${tokens.colors.muted} !important;
   }
 
   &.markdown-body .mb-0 {
@@ -402,30 +402,30 @@ export const StyledMarkdownBody = styled.div`
   }
 
   &.markdown-body .pl-c {
-    color: #6a737d;
+    color: ${tokens.colors.muted};
   }
 
   &.markdown-body .pl-c1,
   &.markdown-body .pl-s .pl-v {
-    color: #005cc5;
+    color: ${tokens.colors.action};
   }
 
   &.markdown-body .pl-e,
   &.markdown-body .pl-en {
-    color: #6f42c1;
+    color: ${tokens.colors.action};
   }
 
   &.markdown-body .pl-s .pl-s1,
   &.markdown-body .pl-smi {
-    color: #24292e;
+    color: ${tokens.colors.ink};
   }
 
   &.markdown-body .pl-ent {
-    color: #22863a;
+    color: ${tokens.colors.success};
   }
 
   &.markdown-body .pl-k {
-    color: #d73a49;
+    color: ${tokens.colors.action};
   }
 
   &.markdown-body .pl-pds,
@@ -435,26 +435,26 @@ export const StyledMarkdownBody = styled.div`
   &.markdown-body .pl-sr .pl-cce,
   &.markdown-body .pl-sr .pl-sra,
   &.markdown-body .pl-sr .pl-sre {
-    color: #032f62;
+    color: ${tokens.colors.ink};
   }
 
   &.markdown-body .pl-smw,
   &.markdown-body .pl-v {
-    color: #e36209;
+    color: ${tokens.colors.warning};
   }
 
   &.markdown-body .pl-bu {
-    color: #b31d28;
+    color: ${tokens.colors.error};
   }
 
   &.markdown-body .pl-ii {
-    color: #fafbfc;
-    background-color: #b31d28;
+    color: ${tokens.colors.canvas};
+    background-color: ${tokens.colors.error};
   }
 
   &.markdown-body .pl-c2 {
-    color: #fafbfc;
-    background-color: #d73a49;
+    color: ${tokens.colors.canvas};
+    background-color: ${tokens.colors.action};
   }
 
   &.markdown-body .pl-c2:before {
@@ -463,66 +463,66 @@ export const StyledMarkdownBody = styled.div`
 
   &.markdown-body .pl-sr .pl-cce {
     font-weight: 700;
-    color: #22863a;
+    color: ${tokens.colors.success};
   }
 
   &.markdown-body .pl-ml {
-    color: #735c0f;
+    color: ${tokens.colors.warning};
   }
 
   &.markdown-body .pl-mh,
   &.markdown-body .pl-mh .pl-en,
   &.markdown-body .pl-ms {
     font-weight: 700;
-    color: #005cc5;
+    color: ${tokens.colors.action};
   }
 
   &.markdown-body .pl-mi {
     font-style: italic;
-    color: #24292e;
+    color: ${tokens.colors.ink};
   }
 
   &.markdown-body .pl-mb {
     font-weight: 700;
-    color: #24292e;
+    color: ${tokens.colors.ink};
   }
 
   &.markdown-body .pl-md {
-    color: #b31d28;
-    background-color: #ffeef0;
+    color: ${tokens.colors.error};
+    background-color: ${tokens.colors.canvas};
   }
 
   &.markdown-body .pl-mi1 {
-    color: #22863a;
-    background-color: #f0fff4;
+    color: ${tokens.colors.success};
+    background-color: ${tokens.colors.canvas};
   }
 
   &.markdown-body .pl-mc {
-    color: #e36209;
-    background-color: #ffebda;
+    color: ${tokens.colors.warning};
+    background-color: ${tokens.colors.canvas};
   }
 
   &.markdown-body .pl-mi2 {
-    color: #f6f8fa;
-    background-color: #005cc5;
+    color: ${tokens.colors.canvas};
+    background-color: ${tokens.colors.action};
   }
 
   &.markdown-body .pl-mdr {
     font-weight: 700;
-    color: #6f42c1;
+    color: ${tokens.colors.action};
   }
 
   &.markdown-body .pl-ba {
-    color: #586069;
+    color: ${tokens.colors.muted};
   }
 
   &.markdown-body .pl-sg {
-    color: #959da5;
+    color: ${tokens.colors.muted};
   }
 
   &.markdown-body .pl-corl {
     text-decoration: underline;
-    color: #032f62;
+    color: ${tokens.colors.ink};
   }
 
   &.markdown-body .mb-0 {
@@ -600,20 +600,21 @@ export const StyledMarkdownBody = styled.div`
   }
 
   &.markdown-body hr {
-    border-bottom-color: #eee;
+    border-bottom-color: ${tokens.colors.border};
   }
 
   &.markdown-body kbd {
     display: inline-block;
-    padding: 3px 5px;
-    font: 11px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
-    line-height: 10px;
-    color: #444d56;
+    padding: 4px 8px;
+    font-family: ${tokens.fonts.mono};
+    font-size: 12px;
+    line-height: 1.5;
+    color: ${tokens.colors.muted};
     vertical-align: middle;
-    background-color: #fafbfc;
-    border: 1px solid #d1d5da;
-    border-radius: 3px;
-    box-shadow: inset 0 -1px 0 #d1d5da;
+    background-color: ${tokens.colors.canvas};
+    border: 1px solid ${tokens.colors.border};
+    border-radius: ${tokens.radius.small}px;
+    box-shadow: inset 0 -1px 0 ${tokens.colors.border};
   }
 
   &.markdown-body:after,
@@ -655,14 +656,14 @@ export const StyledMarkdownBody = styled.div`
     height: 0.25em;
     padding: 0;
     margin: 24px 0;
-    background-color: #e1e4e8;
+    background-color: ${tokens.colors.border};
     border: 0;
   }
 
   &.markdown-body blockquote {
     padding: 0 1em;
-    color: #6a737d;
-    border-left: 0.25em solid #dfe2e5;
+    color: ${tokens.colors.muted};
+    border-left: 4px solid ${tokens.colors.sage};
   }
 
   &.markdown-body blockquote > :first-child {
@@ -681,39 +682,40 @@ export const StyledMarkdownBody = styled.div`
   &.markdown-body h6 {
     margin-top: 24px;
     margin-bottom: 16px;
+    font-family: ${tokens.fonts.heading};
     font-weight: 600;
     line-height: 1.25;
   }
 
   &.markdown-body h1 {
-    font-size: 2em;
+    font-size: 32px;
   }
 
   &.markdown-body h1,
   &.markdown-body h2 {
     padding-bottom: 0.3em;
-    border-bottom: 1px solid #eaecef;
+    border-bottom: 1px solid ${tokens.colors.border};
   }
 
   &.markdown-body h2 {
-    font-size: 1.5em;
+    font-size: 28px;
   }
 
   &.markdown-body h3 {
-    font-size: 1.25em;
+    font-size: 24px;
   }
 
   &.markdown-body h4 {
-    font-size: 1em;
+    font-size: 24px;
   }
 
   &.markdown-body h5 {
-    font-size: 0.875em;
+    font-size: 24px;
   }
 
   &.markdown-body h6 {
-    font-size: 0.85em;
-    color: #6a737d;
+    font-size: 24px;
+    color: ${tokens.colors.muted};
   }
 
   &.markdown-body ol,
@@ -770,23 +772,23 @@ export const StyledMarkdownBody = styled.div`
 
   &.markdown-body table td,
   &.markdown-body table th {
-    padding: 6px 13px;
-    border: 1px solid #dfe2e5;
+    padding: 8px 16px;
+    border: 1px solid ${tokens.colors.border};
   }
 
   &.markdown-body table tr {
-    background-color: #fff;
-    border-top: 1px solid #c6cbd1;
+    background-color: ${tokens.colors.surface};
+    border-top: 1px solid ${tokens.colors.border};
   }
 
   &.markdown-body table tr:nth-child(2n) {
-    background-color: #f6f8fa;
+    background-color: ${tokens.colors.canvas};
   }
 
   &.markdown-body img {
     max-width: 100%;
     box-sizing: initial;
-    background-color: #fff;
+    background-color: ${tokens.colors.surface};
   }
 
   &.markdown-body img[align='right'] {
@@ -801,8 +803,8 @@ export const StyledMarkdownBody = styled.div`
     padding: 0.2em 0.4em;
     margin: 0;
     font-size: 85%;
-    background-color: rgba(27, 31, 35, 0.05);
-    border-radius: 3px;
+    background-color: ${tokens.colors.hover};
+    border-radius: ${tokens.radius.small}px;
   }
 
   &.markdown-body pre {
@@ -834,8 +836,8 @@ export const StyledMarkdownBody = styled.div`
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    background-color: #f6f8fa;
-    border-radius: 3px;
+    background-color: ${tokens.colors.canvas};
+    border-radius: ${tokens.radius.small}px;
   }
 
   &.markdown-body pre code {
@@ -852,14 +854,14 @@ export const StyledMarkdownBody = styled.div`
 
   &.markdown-body .commit-tease-sha {
     display: inline-block;
-    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    font-family: ${tokens.fonts.mono};
     font-size: 90%;
-    color: #444d56;
+    color: ${tokens.colors.muted};
   }
 
   &.markdown-body .full-commit .btn-outline:not(:disabled):hover {
-    color: #005cc5;
-    border-color: #005cc5;
+    color: ${tokens.colors.action};
+    border-color: ${tokens.colors.action};
   }
 
   &.markdown-body .blob-wrapper {
@@ -877,10 +879,10 @@ export const StyledMarkdownBody = styled.div`
     min-width: 50px;
     padding-right: 10px;
     padding-left: 10px;
-    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    font-family: ${tokens.fonts.mono};
     font-size: 12px;
     line-height: 20px;
-    color: rgba(27, 31, 35, 0.3);
+    color: ${tokens.colors.muted};
     text-align: right;
     white-space: nowrap;
     vertical-align: top;
@@ -892,7 +894,7 @@ export const StyledMarkdownBody = styled.div`
   }
 
   &.markdown-body .blob-num:hover {
-    color: rgba(27, 31, 35, 0.6);
+    color: ${tokens.colors.action};
   }
 
   &.markdown-body .blob-num:before {
@@ -909,9 +911,9 @@ export const StyledMarkdownBody = styled.div`
 
   &.markdown-body .blob-code-inner {
     overflow: visible;
-    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    font-family: ${tokens.fonts.mono};
     font-size: 12px;
-    color: #24292e;
+    color: ${tokens.colors.ink};
     word-wrap: normal;
     white-space: pre;
   }
@@ -919,7 +921,7 @@ export const StyledMarkdownBody = styled.div`
   &.markdown-body .pl-token.active,
   &.markdown-body .pl-token:hover {
     cursor: pointer;
-    background: #ffea7f;
+    background: ${tokens.colors.selected};
   }
 
   &.markdown-body .tab-size[data-tab-size='1'] {

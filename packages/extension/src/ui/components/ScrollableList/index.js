@@ -4,14 +4,23 @@ import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 
 const StyledContainer = styled(Grid)`
-  height: ${props => props.height}px;
+  height: ${props => (props.height ? `${props.height}px` : 'auto')};
+  min-height: 0;
   max-height: 100%;
-  overflow-y: scroll;
+  align-content: flex-start;
+  flex-shrink: 1;
+  row-gap: 12px;
+  padding: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: ${props => props.theme.tokens.colors.controlBorder}
+    transparent;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 `;
 
 const ScrollableList = ({ items, renderItem, height }) => {
   return (
-    <StyledContainer container spacing={1} height={height}>
+    <StyledContainer container height={height}>
       {items.map(item => (
         <Grid key={item.id} item xs={12}>
           {renderItem(item)}

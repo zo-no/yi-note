@@ -64,22 +64,39 @@ const Toolbar = () => {
     <Grid>
       {exporting ? (
         <>
-          <IconButton color="inherit" onClick={executeExport}>
+          <IconButton
+            color="inherit"
+            aria-label={t('bookmarks.export.tooltip')}
+            onClick={executeExport}
+          >
             <CheckIcon />
           </IconButton>
-          <IconButton color="inherit" onClick={cancelExport}>
+          <IconButton
+            color="inherit"
+            aria-label={t('page.cancel.tooltip')}
+            onClick={cancelExport}
+          >
             <CloseIcon />
           </IconButton>
         </>
       ) : (
         <>
           <Tooltip title={t('bookmarks.tag.tooltip')}>
-            <IconButton color="inherit" onClick={toggleTags}>
+            <IconButton
+              color="inherit"
+              aria-label={t('bookmarks.tag.tooltip')}
+              aria-pressed={filtering}
+              onClick={toggleTags}
+            >
               <FilterIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title={t('bookmarks.export.tooltip')}>
-            <IconButton color="inherit" onClick={startExport}>
+            <IconButton
+              color="inherit"
+              aria-label={t('bookmarks.export.tooltip')}
+              onClick={startExport}
+            >
               <ExportIcon />
             </IconButton>
           </Tooltip>

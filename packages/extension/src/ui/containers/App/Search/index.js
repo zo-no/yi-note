@@ -4,8 +4,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useTranslation } from 'react-i18next';
 import { debounce } from 'throttle-debounce';
 import { SearchSharp as SearchIcon } from '@material-ui/icons';
-import Grid from '@material-ui/core/Grid';
-import { StyledArrow, StyledInput } from './styled';
+import { StyledSearch, StyledArrow, StyledInput } from './styled';
 
 const Search = () => {
   const { t } = useTranslation('search');
@@ -32,18 +31,19 @@ const Search = () => {
   };
 
   return (
-    <Grid container direction="row" alignItems="center">
+    <StyledSearch container direction="row" alignItems="center">
       <StyledArrow item>
         <SearchIcon />
       </StyledArrow>
       <StyledInput
         type="text"
         placeholder={t('placeholder')}
+        aria-label={t('placeholder')}
         value={query}
         onFocus={handleFocus}
         onChange={onInputChangeHandler}
       />
-    </Grid>
+    </StyledSearch>
   );
 };
 

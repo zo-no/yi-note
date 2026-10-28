@@ -28,12 +28,15 @@ import {
   ISSUE_URL
 } from '@yi-note/common/constants';
 import { getVersion } from '@yi-note/common/utils';
-import { drawerWidth, headerHeight } from '../constants';
+import { drawerWidth } from '../constants';
+import brandIcon from '../../../../../icons/icon-128.png';
 
 const version = getVersion();
 
 const StyledNav = styled.nav`
-  width: ${drawerWidth}px;
+  @media (min-width: 600px) {
+    width: ${drawerWidth}px;
+  }
 `;
 
 const StyledDrawer = styled(({ ...rest }) => (
@@ -41,14 +44,51 @@ const StyledDrawer = styled(({ ...rest }) => (
 ))`
   & .paper {
     width: ${drawerWidth}px;
+    background: ${props => props.theme.tokens.colors.sidebar};
+    color: ${props => props.theme.tokens.colors.ink};
+    border-right: 1px solid ${props => props.theme.tokens.colors.border};
   }
 `;
 
 const StyledDrawerHeader = styled.div`
-  height: ${headerHeight}px;
+  min-height: 96px;
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  padding: 20px 16px;
+
+  & img {
+    display: block;
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+  }
+
+  & h6 {
+    font-family: ${props => props.theme.tokens.fonts.body};
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -1px;
+  }
+`;
+
+const StyledList = styled(List)`
+  padding: 4px 10px;
+`;
+
+const StyledNavItem = styled(ListItem)`
+  min-height: 40px;
+  margin-bottom: 4px;
+  padding: 4px 12px;
+  border-radius: ${props => props.theme.tokens.radius.small}px;
+
+  &[aria-current='page'] {
+    background: ${props => props.theme.tokens.colors.selected};
+    color: ${props => props.theme.tokens.colors.action};
+  }
+
+  &[aria-current='page'] span {
+    font-weight: 600;
+  }
 `;
 
 const ResponsiveDrawer = () => {
@@ -70,20 +110,26 @@ const ResponsiveDrawer = () => {
   const drawer = (
     <>
       <StyledDrawerHeader>
-        <Grid container direction="row" alignItems="center" spacing={2}>
+        <Grid
+          container
+          direction="row"
+          alignItems="center"
+          spacing={1}
+          wrap="nowrap"
+        >
           <Grid item>
-            <Typography variant="h6">{t('appName')}</Typography>
+            <img src={brandIcon} alt="" />
           </Grid>
           <Grid item>
+            <Typography variant="h6">wildframe</Typography>
             <Typography
-              variant="body2"
+              variant="caption"
               color="textSecondary"
             >{`v${version}`}</Typography>
           </Grid>
         </Grid>
       </StyledDrawerHeader>
-      <Divider />
-      <List>
+      <StyledList>
         {[
           {
             label: t('bookmarks.title'),
@@ -98,36 +144,45 @@ const ResponsiveDrawer = () => {
             onClick: () => history.push('/settings')
           }
         ].map(item => (
-          <ListItem
+          <StyledNavItem
             button
             key={item.label}
-            onClick={item.onClick}
-            selected={pathname === item.path}
+            onClick={() => {
+              item.onClick();
+              setOpen(false);
+            }}
+            selected={
+              pathname === item.path ||
+              (item.path === '/' && pathname.startsWith('/pages/'))
+            }
+            aria-current={pathname === item.path ? 'page' : undefined}
           >
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.label} />
-          </ListItem>
+          </StyledNavItem>
         ))}
-        <ListItem button onClick={() => window.open(FAQ_URL, '_blank')}>
+      </StyledList>
+      <Divider style={{ margin: '8px 24px' }} />
+      <StyledList>
+        <StyledNavItem button onClick={() => window.open(FAQ_URL, '_blank')}>
           <ListItemIcon>
             <HelpIcon />
           </ListItemIcon>
           <ListItemText primary={t('faq')} />
-        </ListItem>
-        <ListItem button onClick={() => window.open(ISSUE_URL, '_blank')}>
+        </StyledNavItem>
+        <StyledNavItem button onClick={() => window.open(ISSUE_URL, '_blank')}>
           <ListItemIcon>
             <BugReportIcon />
           </ListItemIcon>
           <ListItemText primary={t('issues')} />
-        </ListItem>
-        <ListItem button onClick={() => window.open(GITHUB_URL, '_blank')}>
+        </StyledNavItem>
+        <StyledNavItem button onClick={() => window.open(GITHUB_URL, '_blank')}>
           <ListItemIcon>
             <GitHubIcon />
           </ListItemIcon>
           <ListItemText primary={t('github')} />
-        </ListItem>
-      </List>
-      <Divider />
+        </StyledNavItem>
+      </StyledList>
     </>
   );
 

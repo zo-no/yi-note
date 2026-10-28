@@ -6,38 +6,64 @@ import { Grid, Divider } from '@material-ui/core';
 import MarkdownViewer from '../MarkdownViewer';
 import IconButton from '../IconButton';
 import { MarkdownIcon } from '../../icons';
+import { tokens } from '../../theme';
 
 const EDITOR_MIN_WIDTH = 100;
 
 export const StyledEditorContainer = styled(Grid)`
   flex: 1;
-  border: solid 1px #e1e4e8;
-  border-radius: 5px;
+  min-width: 0;
+  border: 1px solid ${tokens.colors.border};
+  border-radius: ${tokens.radius.medium}px;
+  background: ${tokens.colors.surface};
+  color: ${tokens.colors.ink};
+
+  &:focus-within {
+    border-color: ${tokens.colors.action};
+  }
 `;
 
 export const StyledTextArea = styled(Grid)`
   flex: 1;
 
   & textarea {
-    font-size: 14px;
-    padding: 0 10px;
+    font-family: ${tokens.fonts.body};
+    font-size: ${tokens.fontSizes.compact}px;
+    line-height: 1.6;
+    padding: 8px;
+    background: ${tokens.colors.surface};
+    color: ${tokens.colors.ink};
+    border-radius: ${tokens.radius.small}px;
+    width: 100%;
+    resize: vertical;
     flex: 1;
     min-height: ${EDITOR_MIN_WIDTH}px;
     border: none;
-    outline: none;
     word-break: break-word;
+
+    &::placeholder {
+      color: ${tokens.colors.muted};
+      opacity: 1;
+    }
   }
 
   & div.markdown-body {
     font-size: 14px;
-    padding: 0 10px;
+    padding: 8px;
     min-height: ${EDITOR_MIN_WIDTH}px;
   }
 `;
 
-const StyledMode = styled.div`
-  padding: 3px 5px;
-  font-weight: ${props => (props.selected ? '500' : '400')};
+const StyledMode = styled.button`
+  padding: 8px;
+  border: 0;
+  border-radius: ${tokens.radius.small}px;
+  font-family: ${tokens.fonts.body};
+  font-size: ${tokens.fontSizes.compact}px;
+  font-weight: ${props => (props.selected ? 600 : 400)};
+  color: ${tokens.colors.action};
+  background: ${props =>
+    props.selected ? tokens.colors.selected : 'transparent'};
   cursor: pointer;
 `;
 
@@ -86,6 +112,8 @@ const MarkdownEditor = ({
             {EDIT_MODES.map(m => (
               <Grid key={m.key} item>
                 <StyledMode
+                  type="button"
+                  aria-pressed={m.key === mode}
                   selected={m.key === mode}
                   onClick={handleModeChange.bind(null, m.key)}
                 >

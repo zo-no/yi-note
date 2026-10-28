@@ -14,7 +14,12 @@ import { withTheme } from '@yi-note/common';
 import { headerHeight, drawerWidth } from './constants';
 
 const StyledPageContainer = styled(Container)`
-  margin-top: ${headerHeight + 10}px;
+  margin-top: ${headerHeight}px;
+  padding: ${props => props.theme.tokens.layout.pagePadding}px;
+  padding-bottom: 32px;
+  @media (max-width: 959px) {
+    padding: 16px 12px;
+  }
   @media (min-width: 600px) {
     margin-left: ${drawerWidth}px;
     width: calc(100% - ${drawerWidth}px);
@@ -58,8 +63,8 @@ const App = () => {
     <>
       <Header />
       <Drawer />
-      <StyledPageContainer maxWidth="lg">
-        <Grid container spacing={2} direction="column">
+      <StyledPageContainer maxWidth={false}>
+        <Grid container direction="column">
           {progress && (
             <Grid item container>
               <StyledProgress color="secondary" />

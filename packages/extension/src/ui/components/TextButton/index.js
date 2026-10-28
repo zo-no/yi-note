@@ -1,34 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { tokens } from '@yi-note/common/theme';
 
 const StyledButton = styled.button`
-  font-weight: 500;
-  font-size: 0.9em;
+  font-family: ${tokens.fonts.body};
+  font-weight: 600;
+  font-size: ${tokens.fontSizes.compact}px;
   cursor: pointer;
-  padding: 0;
-  border: none;
-  background: none;
-  color: ${props => props.color};
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: ${tokens.radius.small}px;
+  background: ${props =>
+    props.primary ? tokens.colors.action : 'transparent'};
+  color: ${props =>
+    props.color ||
+    (props.primary ? tokens.colors.surface : tokens.colors.action)};
+
+  &:hover:not(:disabled) {
+    background: ${props =>
+      props.primary ? tokens.colors.ink : tokens.colors.peach};
+  }
+
+  &:disabled {
+    background: ${props =>
+      props.primary ? tokens.colors.inset : 'transparent'};
+    color: ${tokens.colors.muted};
+    cursor: default;
+  }
 `;
 
-const TextButton = ({ children, color, onClick, disabled }) => {
-  return (
-    <StyledButton color={color} onClick={onClick} disabled={disabled}>
-      {children}
-    </StyledButton>
-  );
-};
+const TextButton = ({ children, color, onClick, disabled, primary }) => (
+  <StyledButton
+    type="button"
+    color={color}
+    primary={primary}
+    onClick={onClick}
+    disabled={disabled}
+  >
+    {children}
+  </StyledButton>
+);
 
 TextButton.propTypes = {
   children: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   color: PropTypes.string,
-  disabled: PropTypes.bool
-};
-
-TextButton.defaultProps = {
-  color: '#4763ff'
+  disabled: PropTypes.bool,
+  primary: PropTypes.bool
 };
 
 export default TextButton;

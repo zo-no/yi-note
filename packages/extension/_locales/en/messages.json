@@ -18,6 +18,25 @@
   "bookmark_nobookmark": {
     "message": "No Bookmark"
   },
+  "noteContent_enable": { "message": "Use section labels" },
+  "noteContent_observation": { "message": "Observation" },
+  "noteContent_analysis": { "message": "Breakdown" },
+  "noteContent_takeaway": { "message": "Takeaway" },
+  "noteContent_custom": { "message": "Custom label" },
+  "noteContent_add": { "message": "Add section" },
+  "noteContent_remove": { "message": "Remove this section from the draft" },
+  "noteContent_label": { "message": "Section label" },
+  "noteContent_body": { "message": "Note content" },
+  "noteContent_sectionBody": { "message": "Content for {{label}}" },
+  "noteContent_placeholder": {
+    "message": "Write your notes for this section…"
+  },
+  "noteContent_hint": {
+    "message": "Rename labels or add your own. Markdown is supported. Changes take effect when you save the note."
+  },
+  "noteContent_edit": { "message": "Write" },
+  "noteContent_preview": { "message": "Preview" },
+  "noteContent_toMarkdown": { "message": "Convert to Markdown" },
   "note_edit_tooltip": {
     "message": "Edit Note"
   },
@@ -129,6 +148,16 @@
   "options_bookmarks_export_format_label": {
     "message": "Export format:"
   },
+  "options_navigation_toggle": { "message": "Toggle navigation" },
+  "options_page_back": { "message": "Back to bookmarks" },
+  "options_page_untitled": { "message": "Untitled video" },
+  "options_page_emptyHint": {
+    "message": "Open the video and add a note to see it here."
+  },
+  "options_page_export_menu": { "message": "Export or send notes" },
+  "options_page_description_title": { "message": "Description" },
+  "options_page_description_expand": { "message": "Expand" },
+  "options_page_description_collapse": { "message": "Collapse" },
   "options_page_title": {
     "message": "Page Detail"
   },

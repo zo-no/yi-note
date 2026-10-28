@@ -8,18 +8,19 @@ import { StyledTitle } from '../styled';
 import * as icons from './icons';
 
 const StyledImg = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
 `;
 
 const StyledStatus = styled.span`
-  color: #4763ff;
+  color: ${props => props.theme.tokens.colors.ink};
+  font-size: ${props => props.theme.tokens.fontSizes.auxiliary}px;
 `;
 
 const methods = ['facebook', 'twitter', 'copylink'];
 const hashTags = [
   'edtech',
-  'YiNote',
+  'wildframe',
   'Turbonote',
   'mooc',
   'flipclass',

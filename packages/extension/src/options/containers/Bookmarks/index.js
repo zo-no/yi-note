@@ -5,19 +5,39 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Grid,
-  List,
-  ListItem,
   Chip,
   FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio
 } from '@material-ui/core';
+
 import BookmarkItem from './BookmarkItem';
 import NoBookmark from './NoBookmark';
 
-const StyledContainer = styled(Grid)`
-  min-height: 400px;
+const StyledContainer = styled.div`
+  min-width: 0;
+`;
+
+const StyledFilters = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: ${props => props.theme.tokens.layout.itemGap}px;
+`;
+
+const StyledList = styled.ul`
+  display: grid;
+  gap: ${props => props.theme.tokens.layout.itemGap}px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  & > li {
+    min-width: 0;
+  }
 `;
 
 const Bookmarks = () => {
@@ -36,6 +56,11 @@ const Bookmarks = () => {
     selectTag,
     toolbar: { setExportFormat }
   } = useStoreActions(actions => actions.bookmarks);
+  const { setTitle } = useStoreActions(actions => actions.app);
+
+  useEffect(() => {
+    setTitle(t('bookmarks.title'));
+  }, [setTitle, t]);
 
   useEffect(() => {
     let tagsFromUrl = [];
@@ -90,40 +115,29 @@ const Bookmarks = () => {
               </Grid>
             </Grid>
           )}
-          {filtering && (
-            <Grid item container spacing={1}>
+          {filtering && tags.length > 0 && (
+            <StyledFilters aria-label={t('bookmarks.tag.tooltip')}>
               {tags.map(({ tag, selected }) => (
-                <Grid item key={tag}>
-                  <Chip
-                    label={tag}
-                    color={selected ? 'primary' : 'default'}
-                    clickable
-                    onClick={handleSelectTag.bind(null, tag)}
-                  />
-                </Grid>
+                <Chip
+                  key={tag}
+                  label={tag}
+                  size="small"
+                  color={selected ? 'primary' : 'default'}
+                  clickable
+                  aria-pressed={selected}
+                  onClick={handleSelectTag.bind(null, tag)}
+                />
               ))}
-            </Grid>
+            </StyledFilters>
           )}
-          <Grid item>
-            <List>
-              {bookmarks.map(
-                ({ id, title, description, url, image, selected }) => {
-                  return (
-                    <ListItem key={id}>
-                      <BookmarkItem
-                        id={id}
-                        title={title}
-                        description={description}
-                        url={url}
-                        image={image}
-                        selected={selected}
-                      />
-                    </ListItem>
-                  );
-                }
-              )}
-            </List>
-          </Grid>
+          <StyledList>
+            {bookmarks.map(bookmark => (
+              <li key={bookmark.id}>
+                <BookmarkItem {...bookmark} />
+              </li>
+            ))}
+          </StyledList>
+          {bookmarks.length === 0 && <NoBookmark />}
         </Grid>
       )}
     </StyledContainer>

@@ -2,37 +2,73 @@ import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import { ChevronRight as ExpandIcon } from '@material-ui/icons';
 
+export const StyledCard = styled(Grid)`
+  background: ${props => props.theme.tokens.colors.surface};
+  border: 1px solid ${props => props.theme.tokens.colors.border};
+  border-radius: ${props => props.theme.tokens.radius.medium}px;
+
+  &:focus-within,
+  &[data-expanded='true'] {
+    border-color: ${props => props.theme.tokens.colors.controlBorder};
+  }
+`;
+
 export const StyledMainRow = styled(Grid)`
-  background: #f6f6f6;
-  height: 36px;
+  min-height: 64px;
+  padding: 8px;
+  flex-wrap: nowrap;
+
+  > div:first-child {
+    flex: 1;
+    min-width: 0;
+
+    > div {
+      flex-wrap: nowrap;
+    }
+  }
 `;
 
 export const StyledExpandedSection = styled(Grid)`
-  padding: ${props => (props.expanded ? 4 : 0)}px;
-  border-top: ${props => props.expanded && '1px solid #d3d3d3'};
-  max-height: ${props => (props.expanded ? 400 : 0)}px;
-  overflow: hidden;
-  overflow-y: scroll;
-  transition: max-height 0.2s ease-in-out;
+  display: ${props => (props.expanded ? 'flex' : 'none')};
+  padding: 16px;
+  border-top: 1px solid ${props => props.theme.tokens.colors.border};
+  max-height: 400px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
 `;
 
 export const StyledExpandMoreIcon = styled(ExpandIcon)`
   transform: ${({ expanded }) => expanded && 'rotate(90deg)'};
-  transition: all 0.1s ease-in-out;
+  transition: transform 0.1s ease-in-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 export const StyledSummary = styled.div`
-  max-width: 200px;
+  min-width: 0;
+  font-size: ${props => props.theme.tokens.fontSizes.compact}px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
 export const StyledNote = styled.div`
-  width: 360px;
+  width: 100%;
+  min-width: 0;
 `;
 
-export const StyledTimestamp = styled.div`
+export const StyledTimestamp = styled.span`
+  font-family: ${props => props.theme.tokens.fonts.mono};
+  font-size: ${props => props.theme.tokens.fontSizes.auxiliary}px;
+  font-variant-numeric: tabular-nums;
   font-weight: 500;
-  padding: 0 2px;
+  white-space: nowrap;
+  color: ${props => props.theme.tokens.colors.action};
+  background: ${props => props.theme.tokens.colors.peach};
+  border-radius: ${props => props.theme.tokens.radius.small}px;
+  margin-left: 4px;
+  padding: 4px 8px;
 `;

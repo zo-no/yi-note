@@ -23,15 +23,22 @@ function deferred() {
   return { promise, resolve, reject };
 }
 
-function loadDefault(relativePath, context = {}) {
+function loadDefault(relativePath, context = {}, result) {
   const filename = path.join(__dirname, relativePath);
   const source = readFileSync(filename, 'utf8')
     .replace(/^import\s[\s\S]*?;\r?\n/gm, '')
     .replace(/^export const /gm, 'const ')
     .replace('export default', 'globalThis.result =');
-  return vm.runInNewContext(source, context, { filename });
+  return vm.runInNewContext(result ? `${source}\n${result}` : source, context, {
+    filename
+  });
 }
 
+const { hasNoteContent, sectionsToMarkdown } = loadDefault(
+  '../../common/utils/noteSections.js',
+  {},
+  '({ hasNoteContent, sectionsToMarkdown })'
+);
 const addNoteToList = loadDefault('../../common/utils/addNoteToList.js');
 const handleKeyDown = loadDefault('../src/ui/utils/handleNoteEditorKeyDown.js');
 
@@ -194,6 +201,7 @@ function createEditor(t) {
       }
     },
     useStore: () => ({ getState: () => state, getActions: () => actions }),
+    hasNoteContent,
     StorageService,
     TYPE_VIDEO_NOTE,
     KEY_PAUSE_VIDEO_WHEN_EDITING,
@@ -271,6 +279,86 @@ function seedPage(h, notes = []) {
     tags: []
   });
 }
+
+const sectionDraft = (body = '看到的内容') => {
+  const sections = [
+    { id: 'observe', kind: 'observation', label: '观察', content: body },
+    { id: 'analyze', kind: 'analysis', label: '拆解', content: '' }
+  ];
+  return { sections, content: sectionsToMarkdown(sections) };
+};
+
+test('structured draft saves labels and content together and resets both for the next note', async t => {
+  const h = createEditor(t);
+  const draft = sectionDraft();
+  h.hook.handleChange(draft);
+  await h.hook.handleSave();
+  const [saved] = committedNotes(h);
+  assert.deepEqual(saved.sections, draft.sections);
+  assert.equal(saved.content, draft.content);
+  assert.equal(saved.timestamp, 12);
+  assert.equal(h.editor.note.sections, undefined);
+  assert.equal(h.editor.note.content, '');
+});
+
+test('blank section templates are not saved as notes containing only labels', async t => {
+  const h = createEditor(t);
+  h.hook.handleChange(sectionDraft('  '));
+  await h.hook.handleSave();
+  assert.equal(h.calls.writes.length, 0);
+  assert.equal(h.editor.note.sections.length, 2);
+});
+
+test('canceling a structured edit leaves the persisted note unchanged', async t => {
+  const h = createEditor(t);
+  const original = {
+    ...sectionDraft(),
+    id: 'existing',
+    timestamp: 8,
+    type: TYPE_VIDEO_NOTE
+  };
+  seedPage(h, [original]);
+  h.actions.videoNotes.edit(original);
+  h.hook.handleChange(sectionDraft('尚未保存的修改'));
+  h.hook.handleCancel();
+  assert.deepEqual(copy(h.state.page.data.notes[0]), original);
+  assert.equal(h.calls.writes.length, 0);
+  assert.equal(h.editor.note.sections, undefined);
+});
+
+test('failed structured save retains all draft fields for retry', async t => {
+  const h = createEditor(t);
+  const draft = sectionDraft();
+  h.beforeWrite = () => {
+    throw new Error('storage unavailable');
+  };
+  h.hook.handleChange(draft);
+  await h.hook.handleSave();
+  assert.equal(h.render().error, 'editor.saveError');
+  assert.deepEqual(copy(h.editor.note.sections), draft.sections);
+  assert.equal(h.editor.note.content, draft.content);
+  h.beforeWrite = () => {};
+  await h.hook.handleSave();
+  assert.deepEqual(committedNotes(h)[0].sections, draft.sections);
+});
+
+test('plain-text edits clear stale section metadata instead of resurrecting old content', async t => {
+  const h = createEditor(t);
+  const original = {
+    ...sectionDraft(),
+    id: 'existing',
+    timestamp: 8,
+    type: TYPE_VIDEO_NOTE
+  };
+  seedPage(h, [original]);
+  h.actions.videoNotes.edit(original);
+  h.hook.handleChange('新的普通 Markdown');
+  await h.hook.handleSave();
+  const [saved] = committedNotes(h);
+  assert.equal(saved.content, '新的普通 Markdown');
+  assert.deepEqual(saved.sections, []);
+  assert.equal(saved.id, 'existing');
+});
 
 test('Enter saves two consecutive drafts without refocusing; zero is valid', async t => {
   const h = createEditor(t);

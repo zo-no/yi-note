@@ -1,51 +1,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { makeStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
+import { tokens } from '../../theme';
 
-const sizeMap = {
-  small: 18,
-  medium: 24,
-  large: 30
-};
+const sizeMap = { small: 18, medium: 24, large: 30 };
 
-const StyledContainer = styled.div`
-  width: ${({ size }) => sizeMap[size]}px;
-  height: ${({ size }) => sizeMap[size]}px;
-  display: block;
+const StyledContainer = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 32px;
+  min-height: 32px;
+  margin: 0;
+  padding: 4px;
+  border: none;
+  border-radius: ${tokens.radius.small}px;
+  background: transparent;
+  color: ${props => props.color || tokens.colors.action};
   cursor: pointer;
-  color: ${props => props.color};
-  padding: 0 2px;
+  line-height: 1;
+
+  &:hover {
+    background: ${tokens.colors.hover};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${tokens.colors.action};
+    outline-offset: 2px;
+  }
 
   & svg {
     width: ${({ size }) => sizeMap[size]}px;
     height: ${({ size }) => sizeMap[size]}px;
+    fill: currentColor;
   }
 `;
 
-const useStyles = makeStyles({
-  tooltip: { fontSize: '10px' }
-});
+const IconButton = ({ size, color, tooltip, children, onClick, ...rest }) => {
+  const button = (
+    <StyledContainer
+      type="button"
+      size={size}
+      color={color}
+      onClick={onClick}
+      aria-label={tooltip}
+      {...rest}
+    >
+      {children}
+    </StyledContainer>
+  );
 
-const IconButton = ({ size, color, tooltip, children, onClick }) => {
-  const classes = useStyles();
-
-  if (tooltip) {
-    return (
-      <Tooltip title={tooltip} classes={{ tooltip: classes.tooltip }}>
-        <StyledContainer size={size} color={color} onClick={onClick}>
-          {children}
-        </StyledContainer>
-      </Tooltip>
-    );
-  } else {
-    return (
-      <StyledContainer size={size} color={color} onClick={onClick}>
-        {children}
-      </StyledContainer>
-    );
-  }
+  return tooltip ? <Tooltip title={tooltip}>{button}</Tooltip> : button;
 };
 
 IconButton.propTypes = {
@@ -56,9 +63,6 @@ IconButton.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-IconButton.defaultProps = {
-  size: 'medium',
-  color: '#000000'
-};
+IconButton.defaultProps = { size: 'medium' };
 
 export default IconButton;

@@ -10,8 +10,11 @@ import { IconButton } from '@yi-note/common/components';
 import { GITHUB_URL } from '@yi-note/common/constants';
 
 const StyledContainer = styled(Grid)`
-  padding: 10px 5px;
-  background: #fafafa;
+  flex-shrink: 0;
+  min-height: ${props => props.theme.footer.height}px;
+  padding: 10px 20px;
+  background: ${props => props.theme.tokens.colors.sidebar};
+  border-top: 1px solid ${props => props.theme.tokens.colors.border};
 `;
 
 const Footer = () => {
@@ -26,12 +29,7 @@ const Footer = () => {
   };
 
   return (
-    <StyledContainer
-      container
-      justify="space-between"
-      spacing={1}
-      alignItems="center"
-    >
+    <StyledContainer container justify="space-between" alignItems="center">
       <Grid item>
         <IconButton tooltip={t('github.tooltip')} onClick={openGithubRepo}>
           <GitHubIcon />

@@ -2,17 +2,29 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useStoreState, useStoreActions } from 'easy-peasy';
 import { useTranslation } from 'react-i18next';
-import { Grid, Typography, Chip } from '@material-ui/core';
 import VideoNoteItem from './VideoNoteItem';
+import Description from './Description';
 import { TagDialog } from '@yi-note/common/components';
 import { TYPE_VIDEO_NOTE } from '@yi-note/common/constants';
+import {
+  StyledPage,
+  StyledHeader,
+  StyledTitle,
+  StyledMeta,
+  StyledSource,
+  StyledNoteList,
+  StyledTextNote,
+  StyledEmptyState,
+  StyledTags,
+  StyledTag
+} from './styled';
 
 const Page = () => {
   const { t } = useTranslation('options');
   const { id } = useParams();
   const {
     data: {
-      meta: { title, url },
+      meta: { title, url, description },
       notes,
       tags
     }
@@ -27,33 +39,48 @@ const Page = () => {
     fetchPage(id);
   }, [fetchPage, id, setAppTitle, t]);
 
+  let source = url;
+  try {
+    source = new URL(url).hostname.replace(/^www\./, '');
+  } catch (e) {
+    // Imported bookmarks may not have a complete URL; retain the saved value.
+  }
+
   return (
-    <>
-      <Grid container direction="column" spacing={3}>
-        <Grid item container>
-          <Typography variant="subtitle1">{title}</Typography>
-        </Grid>
-        <Grid item container spacing={1}>
-          {tags.map(tag => (
-            <Grid item key={tag}>
-              <Chip label={tag} color="default" />
-            </Grid>
-          ))}
-        </Grid>
-        <Grid item container spacing={6}>
-          {notes.map(note => (
-            <Grid key={note.id} item container>
-              {note.type === TYPE_VIDEO_NOTE ? (
-                <VideoNoteItem note={note} url={url} />
-              ) : (
-                <div>{note.content}</div>
-              )}
-            </Grid>
-          ))}
-        </Grid>
-      </Grid>
+    <StyledPage>
+      <StyledHeader>
+        <StyledTitle>{title || t('page.untitled')}</StyledTitle>
+        {(source || tags.length > 0) && (
+          <StyledMeta>
+            {source && <StyledSource>{source}</StyledSource>}
+            {tags.length > 0 && (
+              <StyledTags aria-label={t('page.tag.tooltip')}>
+                {tags.map(tag => (
+                  <StyledTag key={tag}>{tag}</StyledTag>
+                ))}
+              </StyledTags>
+            )}
+          </StyledMeta>
+        )}
+        <Description key={id} description={description} />
+      </StyledHeader>
+      <StyledNoteList aria-label={t('notesView:title')}>
+        {notes.map(note =>
+          note.type === TYPE_VIDEO_NOTE ? (
+            <VideoNoteItem key={note.id} note={note} url={url} />
+          ) : (
+            <StyledTextNote key={note.id}>{note.content}</StyledTextNote>
+          )
+        )}
+        {notes.length === 0 && (
+          <StyledEmptyState>
+            <h2>{t('note:nonote')}</h2>
+            <p>{t('page.emptyHint')}</p>
+          </StyledEmptyState>
+        )}
+      </StyledNoteList>
       <TagDialog tags={tags} onAddTag={addTag} onRemoveTag={removeTag} />
-    </>
+    </StyledPage>
   );
 };
 

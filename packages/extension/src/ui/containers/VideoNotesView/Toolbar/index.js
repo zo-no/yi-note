@@ -5,6 +5,7 @@ import { useStoreState, useStoreActions } from 'easy-peasy';
 import { Grid } from '@material-ui/core';
 import {
   BookmarkBorderOutlined as BookmarkIcon,
+  Bookmark as BookmarkedIcon,
   Sync as SyncIcon,
   OpenInNew as OpenInNewIcon,
   FavoriteBorder as SponsorIcon
@@ -13,7 +14,12 @@ import { IconButton } from '@yi-note/common/components';
 import { useSyncNotes, useLoadScreenshots } from '../../../hooks';
 
 export const StyledIconContainer = styled(Grid)`
-  padding-right: 5px;
+  padding: 2px;
+
+  & button[aria-pressed='true'] {
+    background: ${props => props.theme.tokens.colors.peach};
+    color: ${props => props.theme.tokens.colors.action};
+  }
 `;
 
 const Toolbar = () => {
@@ -58,6 +64,7 @@ const Toolbar = () => {
         <StyledIconContainer item>
           <IconButton
             tooltip={t('bookmark:add.tooltip')}
+            aria-pressed={false}
             onClick={bookmarkPage}
           >
             <BookmarkIcon />
@@ -66,11 +73,11 @@ const Toolbar = () => {
       ) : (
         <StyledIconContainer item>
           <IconButton
-            color="red"
             tooltip={t('bookmark:remove.tooltip')}
+            aria-pressed
             onClick={handleRemovePage}
           >
-            <BookmarkIcon />
+            <BookmarkedIcon />
           </IconButton>
         </StyledIconContainer>
       )}
@@ -98,7 +105,6 @@ const Toolbar = () => {
         <IconButton
           tooltip={t('support.tooltip')}
           onClick={handleOpenSupportDialog}
-          color="red"
         >
           <SponsorIcon />
         </IconButton>

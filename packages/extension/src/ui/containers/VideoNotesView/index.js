@@ -17,8 +17,14 @@ export const StyledEditorContainer = styled.div`
   height: 70px;
 `;
 
-export const StyledTitle = styled.div`
-  font-weight: 500;
+export const StyledTitle = styled.h2`
+  margin: 0;
+  font-family: ${props => props.theme.tokens.fonts.heading};
+  font-size: ${props => props.theme.tokens.fontSizes.heading}px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  color: ${props => props.theme.tokens.colors.ink};
 `;
 
 const NotesView = () => {
@@ -55,7 +61,13 @@ const NotesView = () => {
         <Grid item>
           <Editor />
         </Grid>
-        <Grid item container direction="row" justify="space-between">
+        <Grid
+          item
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
           <Grid item>
             <StyledTitle>{t('title')}</StyledTitle>
           </Grid>
